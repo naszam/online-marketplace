@@ -1,0 +1,50 @@
+pragma solidity ^0.5.0;
+
+/// @title Adminable
+/// @author Nazzareno Massari
+/// @notice Set out the Admins states and modifiers
+/// @dev Admins are responsible for assigning and removing admin accounts;
+import "@openzeppelin/contracts/GSN/Context.sol";
+import "@openzeppelin/contracts/lifecycle/Pausable.sol";
+
+contract Adminable is Context, Pausable {
+
+  mapping (address => bool) private admins;
+
+  event AdminAdded(address indexed admin);
+  event AdminRemoved(address indexed admin);
+
+  costructor() internal {
+    admins[_msgSender()] = true;
+  }
+
+  modifier onlyAdmin() {
+    require(isAdmin(_msgSender()), "Caller is not an Admin");
+  }
+
+  function isAdmin(address account)
+    public
+    view
+    returns (bool)
+  {
+    return admins[account];
+  }
+
+  function addAdmin(address account)
+    public
+    whenNotPaused
+    onlyAdmin
+  {
+    admins[account] = true;
+    emit AdminAdded(account);
+  }
+
+  function removeAdmin(address account)
+    public
+    whenNotPaused
+    onlyAdmin
+  {
+    admins[account] = false;
+    emit AdminRemoved(account);
+  }
+}
