@@ -48,3 +48,11 @@ Clone this GitHub repository.
     $ truffle migrate --network rinkeby
     ```
 
+## Using the DApp
+
+  - Start the Local Web Server:
+  ```sh
+  $ npm dev start
+  ```
+  
+
