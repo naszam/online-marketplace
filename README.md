@@ -1,6 +1,7 @@
 # Online Marketplace
 
-Consensys Academy's 2019 Developer Bootcamp Final Project
+Consensys Academy's 2019 Developer Bootcamp Final Project.
+
 The Project implement an Online Marketplace DApp.
 
 Project Setup
