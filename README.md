@@ -42,6 +42,4 @@ Clone this GitHub repository.
     ```sh
     $ truffle migrate --network rinkeby
     ```
-// ## I've deployed the smart contract on [Rinkeby's Testnet](https://www.rinkeby.io/#explorer):
-// - Contract Address: 
 
