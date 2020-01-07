@@ -52,7 +52,7 @@ Clone this GitHub repository.
 
   - Start the Local Web Server:
   ```sh
-  $ npm dev start
+  $ npm run dev
   ```
   
 
