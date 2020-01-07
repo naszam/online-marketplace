@@ -28,6 +28,10 @@ Clone this GitHub repository.
      ```sh
      $ truffle migrate
      ```
+   - Test the smart contract using Truffle & Ganache with the following command:
+     ```sh
+     $ truffle test
+     ```
      
 ## Deploying on Rinkeby's Testnet
   - Get an Ethereum Account on Metamask. 
