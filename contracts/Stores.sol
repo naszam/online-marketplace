@@ -20,6 +20,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     uint id;
     string name;
     address owner;
+    bool isOpen;
     uint balance;
   }
 
@@ -32,31 +33,42 @@ contract Stores is Ownable, Pausable, Marketplace {
     bool purchased;
   }
 
-  event StoreAdded(uint id);
-  event StoreRemoved(uint id);
+  event StoreOpened(uint id);
+  event StoreWithdrawal(uint amount);
+  event StoreClosed(uint id);
   event ItemAdded(uint sku, uint storeId);
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
 
-  function addStore(string memory _name, address _owner, uint _balance)
-    public
-    onlyStoreOwner(storeId)
+
+  function openStore(string memory _name, address _owner)
+    private
+    onlyAdmin()
     whenNotPaused
     returns(bool)
   {
-    store[id] = Store({id: storeId, name: _name, owner: _owner, balance: _balance});
-    emit StoreAdded(storeId);
+    storeOwners[_owner] = true;
+    store[id] = Store({id: storeId, name: _name, owner: _owner, isOpen:true, balance:0});
+    emit StoreOpened(storeId);
     storeId += 1;
     return true;
   }
 
-  function removeStore(uint id)
+  function withdrawStore(uint id)
+    public
+    onlyStoreOwner(storeId)
+    whenNotPaused
+  {
+    emit StoreWithdrawal(uint amount);
+  }
+
+  function closeStore(uint id)
     public
     onlyStoreOwner(storeId)
     whenNotPaused
     returns(bool)
   {
-    emit StoreRemoved(id);
+    emit StoreClosed(id);
   }
 
   function addItem(string memory _name, uint price, uint quantity, uint storeId)
