@@ -7,11 +7,48 @@ pragma solidity ^0.5.0;
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/lifecycle/Pausable";
+import "@openzeppelin/contracts/GSN/Context.sol";
 import "./Adminable.sol"
 
-contract Marketplace is Ownable, Pausable, Adminable {
+contract Marketplace is Ownable, Pausable, Context, Adminable {
 
 
+  mapping (address => bool) storeOwners;
+
+  event StoreOwnerAdded(address indexed storeOwner);
+  event StoreOwnerRemoved(address indexed storeOwner);
+
+  constructor() internal {}
+
+  modifier onlyStoreOwner() {
+      require(isStoreOwner(_msgSender()), "Caller is not a Store Owner");
+      _;
+  }
+
+  function isStoreOwner(address account)
+    public
+    view
+    returns(bool)
+  {
+    return storeOwners[account];
+  }
+
+  function addStoreOwner (address storeOwner)
+    private
+    whenNotPaused
+    onlyAdmin
+  {
+    emit StoreOwnerAdded(storeOwner);
+  }
+
+
+   function removeStoreOwner (address storeOwner)
+    private
+    whenNotPaused
+    onlyAdmin
+   {
+    emit StoreOwnerRemoved(storeOwner);
+   }
 
 
 }

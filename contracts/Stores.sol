@@ -38,11 +38,6 @@ contract Stores is Ownable, Pausable, Marketplace {
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
 
-  modifier onlyStoreOwner(uint storeId) {
-    require();
-    _;
-  }
-
   function addStore(string memory _name, address _owner, uint _balance)
     public
     onlyStoreOwner(storeId)
