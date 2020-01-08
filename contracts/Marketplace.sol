@@ -38,6 +38,7 @@ contract Marketplace is Ownable, Pausable, Context, Adminable {
     whenNotPaused
     onlyAdmin
   {
+    storeOwners[storeOwner] = true;
     emit StoreOwnerAdded(storeOwner);
   }
 
@@ -47,7 +48,8 @@ contract Marketplace is Ownable, Pausable, Context, Adminable {
     whenNotPaused
     onlyAdmin
    {
-    emit StoreOwnerRemoved(storeOwner);
+     storeOwners[storeOwner] = false;
+     emit StoreOwnerRemoved(storeOwner);
    }
 
 
