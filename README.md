@@ -8,7 +8,7 @@ Project Setup
 
 Clone this GitHub repository. 
 
-# Steps to compile and deploy Online Marketplace
+# Steps to compile and deploy 
 
   - Global dependencies
     - Truffle & Ganache:
