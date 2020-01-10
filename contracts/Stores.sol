@@ -19,7 +19,7 @@ contract Stores is Ownable, Pausable, Marketplace {
   struct Store {
     uint id;
     string name;
-    address owner;
+    address payable owner;
     bool isOpen;
     uint balance;
   }
@@ -41,7 +41,7 @@ contract Stores is Ownable, Pausable, Marketplace {
   event ItemPurchased(uint sku, uint storeId);
 
 
-  function openStore(string memory _name, address _owner)
+  function openStore(string memory _name, address payable _owner)
     private
     onlyAdmin()
     whenNotPaused
@@ -59,7 +59,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     onlyStoreOwner()
     whenNotPaused
   {
-
+	 
   }
 
   function closeStore(uint id)
@@ -68,6 +68,10 @@ contract Stores is Ownable, Pausable, Marketplace {
     whenNotPaused
     returns(bool)
   {
+	store[id].isOpen = false;
+	(bool success, ) = store[id].owner.call.value(store[id].balance)("");
+	require(success, "Transfer failed.");
+	emit StoreClosed(id);
 
   }
 
