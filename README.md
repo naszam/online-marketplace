@@ -15,6 +15,10 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g truffle ganache-cli
     ```
+    - OpenZeppelin Contracts:
+    ```sh
+    $ npm install -g @openzeppelin/contracts
+    ```
 ## Running the project with local test network (ganache-cli)
     
    - Start ganache-cli with the following command:
