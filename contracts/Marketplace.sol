@@ -6,11 +6,10 @@ pragma solidity ^0.5.0;
 /// @dev all function calls are tested using Solidity Tests
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "@openzeppelin/contracts/lifecycle/Pausable";
-import "@openzeppelin/contracts/GSN/Context.sol";
-import "./Adminable.sol"
+import "@openzeppelin/contracts/lifecycle/Pausable.sol";
+import "./Adminable.sol";
 
-contract Marketplace is Ownable, Pausable, Context, Adminable {
+contract Marketplace is Ownable, Pausable, Adminable {
 
 
   mapping (address => bool) storeOwners;
@@ -21,7 +20,7 @@ contract Marketplace is Ownable, Pausable, Context, Adminable {
   constructor() internal {}
 
   modifier onlyStoreOwner() {
-      require(isStoreOwner(_msgSender()), "Caller is not a Store Owner");
+      require(isStoreOwner(msg.sender), "Caller is not a Store Owner");
       _;
   }
 
