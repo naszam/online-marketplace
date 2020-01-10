@@ -6,7 +6,7 @@ pragma solidity ^0.5.0;
 /// @dev All function calls are tested using Solidity Tests
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "@openzeppelin/contracts/lifecycle/Pausable";
+import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 import "./Marketplace.sol";
 
 contract Stores is Ownable, Pausable, Marketplace {
@@ -48,7 +48,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     returns(bool)
   {
     storeOwners[_owner] = true;
-    store[id] = Store({id: storeId, name: _name, owner: _owner, isOpen:true, balance:0});
+    store[storeId] = Store({id: storeId, name: _name, owner: _owner, isOpen:true, balance:0});
     emit StoreOpened(storeId);
     storeId += 1;
     return true;
@@ -56,15 +56,15 @@ contract Stores is Ownable, Pausable, Marketplace {
 
   function withdrawStore(uint id)
     public
-    onlyStoreOwner(storeId)
+    onlyStoreOwner()
     whenNotPaused
   {
-    emit StoreWithdrawal(uint amount);
+
   }
 
   function closeStore(uint id)
     public
-    onlyStoreOwner(storeId)
+    onlyStoreOwner()
     whenNotPaused
     returns(bool)
   {
@@ -73,20 +73,20 @@ contract Stores is Ownable, Pausable, Marketplace {
 
   function addItem(string memory _name, uint price, uint quantity, uint storeId)
     public
-    onlyStoreOwner(storeId)
+    onlyStoreOwner()
     whenNotPaused
     returns(bool)
   {
-    emit ItemAdded(sku, storeId);
+
   }
 
   function removeItem(uint sku)
     public
-    onlyStoreOwner(storeId)
+    onlyStoreOwner()
     whenNotPaused
     returns(bool)
   {
-    emit ItemRemoved(sku, storeId);
+
   }
 
   function buyItem(uint sku)
@@ -94,7 +94,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     whenNotPaused
     returns(bool)
  {
-   emit ItemPurchased(sku);
+  
  }
 
 }

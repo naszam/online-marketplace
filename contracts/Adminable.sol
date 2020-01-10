@@ -14,12 +14,13 @@ contract Adminable is Context, Pausable {
   event AdminAdded(address indexed admin);
   event AdminRemoved(address indexed admin);
 
-  costructor() internal {
+  constructor() internal {
     admins[_msgSender()] = true;
   }
 
   modifier onlyAdmin() {
     require(isAdmin(_msgSender()), "Caller is not an Admin");
+    _;
   }
 
   function isAdmin(address account)
