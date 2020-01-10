@@ -12,6 +12,7 @@ import "./Marketplace.sol";
 contract Stores is Ownable, Pausable, Marketplace {
 
   uint storeId = 0;
+  uint skuCount = 0;
   mapping (uint => Store) private store;
   mapping (uint => Item) private item;
 
@@ -75,13 +76,16 @@ contract Stores is Ownable, Pausable, Marketplace {
 
   }
 
-  function addItem(string memory _name, uint price, uint quantity, uint storeId)
+  function addItem(string memory _name, uint _price, uint _quantity, uint _storeId)
     public
     onlyStoreOwner()
     whenNotPaused
     returns(bool)
   {
-
+	item[skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, storeId: _storeId, purchased:false});
+        emit ItemAdded(skuCount, item[skuCount].storeId);
+	skuCount += 1;
+	return true;
   }
 
   function removeItem(uint sku)
