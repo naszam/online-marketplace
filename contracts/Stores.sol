@@ -15,6 +15,7 @@ contract Stores is Ownable, Pausable, Marketplace {
   uint skuCount = 0;
   mapping (uint => Store) private store;
   mapping (uint => Item) private item;
+  mapping (address => uint) private balances;
 
  // using address owner as id?
   struct Store {
@@ -22,7 +23,6 @@ contract Stores is Ownable, Pausable, Marketplace {
     string name;
     address payable owner;
     bool isOpen;
-    uint balance; // fix balance stores like SimpleBank.sol, mapping (address => uint) balances to keep track of owner balance and withdrawals
   }
 
   struct Item {
@@ -49,7 +49,8 @@ contract Stores is Ownable, Pausable, Marketplace {
     returns(bool)
   {
     storeOwners[_owner] = true;
-    store[storeId] = Store({id: storeId, name: _name, owner: _owner, isOpen:true, balance:0});
+    store[storeId] = Store({id: storeId, name: _name, owner: _owner, isOpen:true});
+    balances[_owner] = 0;
     emit StoreOpened(storeId);
     storeId += 1;
     return true;
@@ -60,7 +61,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     onlyStoreOwner()
     whenNotPaused
   {
-	 
+
   }
 */
   function closeStore(uint id)
@@ -70,7 +71,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     returns(bool)
   {
 	store[id].isOpen = false;
-	(bool success, ) = store[id].owner.call.value(store[id].balance)("");
+	(bool success, ) = store[id].owner.call.value(balances[store[id].owner])("");
 	require(success, "Transfer failed.");
 	emit StoreClosed(id);
 
@@ -83,7 +84,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     returns(bool)
   {
 	item[skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, storeId: _storeId, purchased:false});
-        emit ItemAdded(skuCount, item[skuCount].storeId);
+  emit ItemAdded(skuCount, item[skuCount].storeId);
 	skuCount += 1;
 	return true;
   }
@@ -108,6 +109,7 @@ contract Stores is Ownable, Pausable, Marketplace {
  {
 	(bool success, ) = store[item[sku].storeId].owner.call.value(item[sku].price)("");
 	require(success, "Transfer failed.");
+  balances[store[item[sku].storeId].owner] = item[sku].price;
 	item[sku].purchased = true;
 	emit ItemPurchased(sku, item[sku].storeId);
  }
