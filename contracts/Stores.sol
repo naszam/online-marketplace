@@ -22,7 +22,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     string name;
     address payable owner;
     bool isOpen;
-    uint balance;
+    uint balance; // fix balance stores like SimpleBank.sol, mapping (address => uint) balances to keep track of owner balance and withdrawals
   }
 
   struct Item {
@@ -54,7 +54,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     storeId += 1;
     return true;
   }
-
+/*
   function withdrawStore(uint id)
     public
     onlyStoreOwner()
@@ -62,7 +62,7 @@ contract Stores is Ownable, Pausable, Marketplace {
   {
 	 
   }
-
+*/
   function closeStore(uint id)
     public
     onlyStoreOwner()
@@ -94,15 +94,22 @@ contract Stores is Ownable, Pausable, Marketplace {
     whenNotPaused
     returns(bool)
   {
-
+	delete item[sku];
+	emit ItemRemoved(sku, item[sku].storeId);
+	return true;
   }
 
   function buyItem(uint sku)
     public
+  //  Purchased(sku) implement
+  //  paidEnough(sku) implement
     whenNotPaused
     returns(bool)
  {
-
+	(bool success, ) = store[item[sku].storeId].owner.call.value(item[sku].price)("");
+	require(success, "Transfer failed.");
+	item[sku].purchased = true;
+	emit ItemPurchased(sku, item[sku].storeId);
  }
 
 }
