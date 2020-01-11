@@ -35,7 +35,7 @@ contract Stores is Ownable, Pausable, Marketplace {
   }
 
   event StoreOpened(uint id);
-  event StoreWithdrawal(uint amount);
+  event StoreBalanceWithdrawal(address storeOwner, uint withdrawAmount, uint newBalance);
   event StoreClosed(uint id);
   event ItemAdded(uint sku, uint storeId);
   event ItemRemoved(uint sku, uint storeId);
@@ -78,15 +78,21 @@ contract Stores is Ownable, Pausable, Marketplace {
     storeId += 1;
     return true;
   }
-/*
-  function withdrawStore(uint id)
+
+  function withdrawStoreBalance(uint withdrawAmount, uint id)
     public
     onlyStoreOwner()
     whenNotPaused
+    returns (uint)
   {
-
+    require(balances[msg.sender] >= withdrawAmount);
+    balances[msg.sender] -= withdrawAmount;
+    (bool success, ) = msg.sender.call.value(withdrawAmount)("");
+    require(success, "Transfer failed.");
+    emit StoreBalanceWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+    return balances[msg.sender];
   }
-*/
+
   function closeStore(uint id)
     public
     onlyStoreOwner()
@@ -94,9 +100,9 @@ contract Stores is Ownable, Pausable, Marketplace {
     returns(bool)
   {
 	store[id].isOpen = false;
-	balances[store[item[id].storeId].owner] = 0;
+	(bool success, ) = store[item[id].storeId].owner.call.value(balances[store[item[id].storeId].owner])("");
+  require(success, "Transfer failed.");
 	emit StoreClosed(id);
-
   }
 
   function addItem(string memory _name, uint _price, uint _quantity, uint _storeId)
@@ -130,9 +136,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     whenNotPaused
     returns(bool)
  {
-	(bool success, ) = store[item[sku].storeId].owner.call.value(item[sku].price)("");
-	require(success, "Transfer failed.");
-  balances[store[item[sku].storeId].owner] = item[sku].price;
+  balances[store[item[sku].storeId].owner] = msg.value;
 	item[sku].purchased = true;
 	emit ItemPurchased(sku, item[sku].storeId);
  }
