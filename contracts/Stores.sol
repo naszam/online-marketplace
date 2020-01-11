@@ -94,8 +94,7 @@ contract Stores is Ownable, Pausable, Marketplace {
     returns(bool)
   {
 	store[id].isOpen = false;
-	(bool success, ) = store[id].owner.call.value(balances[store[id].owner])("");
-	require(success, "Transfer failed.");
+	balances[store[item[id].storeId].owner] = 0;
 	emit StoreClosed(id);
 
   }
