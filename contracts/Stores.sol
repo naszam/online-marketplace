@@ -41,6 +41,29 @@ contract Stores is Ownable, Pausable, Marketplace {
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
 
+  modifier paidEnough(uint _price) {
+    require(msg.value >= _price);
+    _;
+  }
+
+  modifier checkValue(uint _sku) {
+    _;
+    uint price = item[_sku].price;
+    uint amountToRefund = msg.value - price;
+    (bool success, ) = msg.sender.call.value(amountToRefund)("");
+    require(success, "Transfer Failed");
+  }
+  function() external payable {
+    revert();
+  }
+
+  function getBalance()
+    public
+    view
+    returns (uint)
+  {
+    return balances[msg.sender];
+  }
 
   function openStore(string memory _name, address payable _owner)
     private
@@ -102,8 +125,9 @@ contract Stores is Ownable, Pausable, Marketplace {
 
   function buyItem(uint sku)
     public
-  //  Purchased(sku) implement
-  //  paidEnough(sku) implement
+    payable
+    paidEnough(sku)
+    checkValue(sku)
     whenNotPaused
     returns(bool)
  {
