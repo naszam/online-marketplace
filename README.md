@@ -54,6 +54,6 @@ Clone this GitHub repository.
 ## Using the DApp
 
   - Start the Local Web Server:
-  ```sh
-  $ npm run dev
-  ```
+    ```sh
+    $ npm run dev
+    ```
