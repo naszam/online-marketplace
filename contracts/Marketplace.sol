@@ -6,7 +6,6 @@ pragma solidity ^0.5.0;
 /// @dev all function calls are tested using Solidity Tests
 
 import "@openzeppelin/contracts/ownership/Ownable.sol";
-//import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 import "./Adminable.sol";
 
 contract Marketplace is Ownable, Adminable {
