@@ -35,8 +35,8 @@ contract TestStores {
       uint256 seedValue = itemPrice + 1;
       address(buyerProxy).transfer(seedValue);
 
-      stores.addStoreOwner(address(storeOwnerProxy));
-
+      bool result = stores.addStoreOwner(address(storeOwnerProxy));
+      Assert.isTrue(result, "Only Admin can add a Store Owner");
     }
 
     function testForFailureIfNotStoreOwner () public {
