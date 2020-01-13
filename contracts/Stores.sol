@@ -85,7 +85,7 @@ contract Stores is Marketplace {
     whenNotPaused
     returns (uint)
   {
-    require(balances[msg.sender] >= withdrawAmount);
+    require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
     balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
     (bool success, ) = msg.sender.call.value(withdrawAmount)("");
     require(success, "Transfer failed.");
