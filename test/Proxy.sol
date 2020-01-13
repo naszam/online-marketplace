@@ -40,12 +40,11 @@ contract Proxy {
     return success;
   }
 
-  }
-
   /// @notice Return store balances
   /// @return the store balance
   function getBalance()
     public
+    view
     returns(bool)
   {
     (bool success, ) = address(stores).call(abi.encodeWithSignature("getBalance()"));
