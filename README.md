@@ -56,5 +56,5 @@ Clone this GitHub repository.
 
   - Start the Local Web Server:
     ```sh
-    $ npm run dev
+    $ npm run start
     ```
