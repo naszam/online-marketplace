@@ -1,5 +1,3 @@
-var Adminable = artifacts.require('Adminable')
-var Marketplace = artifacts.require('Marketplace')
 var Stores = artifacts.require('Stores')
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 const BN = web3.utils.BN
