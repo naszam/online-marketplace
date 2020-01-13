@@ -16,8 +16,6 @@ contract Marketplace is Ownable, Adminable {
   event StoreOwnerAdded(address indexed storeOwner);
   event StoreOwnerRemoved(address indexed storeOwner);
 
-  constructor() internal {}
-
   modifier onlyStoreOwner() {
       require(isStoreOwner(msg.sender), "Caller is not a Store Owner");
       _;
@@ -31,7 +29,7 @@ contract Marketplace is Ownable, Adminable {
     return storeOwners[account];
   }
 
-  function addStoreOwner (address storeOwner)
+  function addStoreOwner(address storeOwner)
     private
     whenNotPaused
     onlyAdmin
@@ -41,7 +39,7 @@ contract Marketplace is Ownable, Adminable {
   }
 
 
-   function removeStoreOwner (address storeOwner)
+   function removeStoreOwner(address storeOwner)
     private
     whenNotPaused
     onlyAdmin

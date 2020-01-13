@@ -17,6 +17,7 @@ contract Stores is Marketplace {
   mapping (uint => Item) private item;
   mapping (address => uint) private balances;
 
+ 
  // using address owner as id?
   struct Store {
     uint id;
@@ -65,15 +66,14 @@ contract Stores is Marketplace {
     return balances[msg.sender];
   }
 
-  function openStore(string memory _name, address payable _owner)
+  function openStore(string memory _name)
     private
-    onlyAdmin()
+    onlyStoreOwner()
     whenNotPaused
     returns(bool)
   {
-    storeOwners[_owner] = true;
-    store[storeId] = Store({id: storeId, name: _name, owner: _owner, isOpen:true});
-    balances[_owner] = 0;
+    store[storeId] = Store({id: storeId, name: _name, owner: msg.sender, isOpen:true});
+    balances[msg.sender] = 0;
     emit StoreOpened(storeId);
     storeId = storeId.add(1);
     return true;
