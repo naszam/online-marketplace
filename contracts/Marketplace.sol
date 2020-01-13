@@ -5,10 +5,9 @@ pragma solidity ^0.5.0;
 /// @notice Admins of the Marketplace can use this contract to manage store owners to add stores to the Marketplace
 /// @dev all function calls are tested using Solidity Tests
 
-import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./Adminable.sol";
 
-contract Marketplace is Ownable, Adminable {
+contract Marketplace is Adminable {
 
 
   mapping (address => bool) storeOwners;
@@ -21,6 +20,10 @@ contract Marketplace is Ownable, Adminable {
       _;
   }
 
+  function() external payable {
+    revert();
+  }
+
   function isStoreOwner(address account)
     public
     view
@@ -30,22 +33,26 @@ contract Marketplace is Ownable, Adminable {
   }
 
   function addStoreOwner(address storeOwner)
-    private
+    public
     whenNotPaused
     onlyAdmin
+    returns(bool)
   {
     storeOwners[storeOwner] = true;
     emit StoreOwnerAdded(storeOwner);
+    return true;
   }
 
 
    function removeStoreOwner(address storeOwner)
-    private
+    public
     whenNotPaused
     onlyAdmin
+    returns(bool)
    {
      storeOwners[storeOwner] = false;
      emit StoreOwnerRemoved(storeOwner);
+     return true;
    }
 
 

@@ -17,7 +17,7 @@ contract Stores is Marketplace {
   mapping (uint => Item) private item;
   mapping (address => uint) private balances;
 
- 
+
  // using address owner as id?
   struct Store {
     uint id;
@@ -53,9 +53,6 @@ contract Stores is Marketplace {
     uint amountToRefund = msg.value.sub(price);
     (bool success, ) = msg.sender.call.value(amountToRefund)("");
     require(success, "Transfer Failed");
-  }
-  function() external payable {
-    revert();
   }
 
   function getBalance()

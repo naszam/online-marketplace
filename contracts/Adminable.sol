@@ -4,22 +4,22 @@ pragma solidity ^0.5.0;
 /// @author Nazzareno Massari
 /// @notice Set out the Admins states and modifiers
 /// @dev Admins are responsible for assigning and removing admin accounts;
-import "@openzeppelin/contracts/GSN/Context.sol";
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 
-contract Adminable is Context, Pausable {
+contract Adminable is Ownable, Pausable {
 
   mapping (address => bool) private admins;
 
   event AdminAdded(address indexed admin);
   event AdminRemoved(address indexed admin);
 
-  constructor() internal {
-    admins[_msgSender()] = true;
+  constructor() public {
+    addAdmin(msg.sender);
   }
 
   modifier onlyAdmin() {
-    require(isAdmin(_msgSender()), "Caller is not an Admin");
+    require(isAdmin(msg.sender), "Caller is not an Admin");
     _;
   }
 
