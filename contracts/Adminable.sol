@@ -15,7 +15,7 @@ contract Adminable is Ownable, Pausable {
   event AdminRemoved(address indexed admin);
 
   constructor() public {
-    addAdmin(msg.sender);
+    admins[msg.sender] = true;
   }
 
   modifier onlyAdmin() {
