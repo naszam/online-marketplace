@@ -36,7 +36,10 @@ contract Proxy {
     public
     returns(bool)
   {
-    stores.addStoreOwner(_owner);
+    (bool success, ) = address(stores).call(abi.encodeWithSignature("addStoreOwner(address), _owner"));
+    return success;
+  }
+
   }
 
   /// @notice Return store balances
