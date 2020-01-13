@@ -4,10 +4,12 @@ pragma solidity ^0.5.0;
 /// @author Nazzareno Massari
 /// @notice Store owners can use this contract to manage store's inventory and funds
 /// @dev All function calls are tested using Solidity Tests
-
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./Marketplace.sol";
 
 contract Stores is Marketplace {
+
+  using SafeMath for uint;
 
   uint storeId = 0;
   uint skuCount = 0;
@@ -47,7 +49,7 @@ contract Stores is Marketplace {
   modifier checkValue(uint _sku) {
     _;
     uint price = item[_sku].price;
-    uint amountToRefund = msg.value - price;
+    uint amountToRefund = msg.value.sub(price);
     (bool success, ) = msg.sender.call.value(amountToRefund)("");
     require(success, "Transfer Failed");
   }
@@ -73,7 +75,7 @@ contract Stores is Marketplace {
     store[storeId] = Store({id: storeId, name: _name, owner: _owner, isOpen:true});
     balances[_owner] = 0;
     emit StoreOpened(storeId);
-    storeId += 1;
+    storeId = storeId.add(1);
     return true;
   }
 
@@ -84,7 +86,7 @@ contract Stores is Marketplace {
     returns (uint)
   {
     require(balances[msg.sender] >= withdrawAmount);
-    balances[msg.sender] -= withdrawAmount;
+    balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
     (bool success, ) = msg.sender.call.value(withdrawAmount)("");
     require(success, "Transfer failed.");
     emit StoreBalanceWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
@@ -111,7 +113,7 @@ contract Stores is Marketplace {
   {
 	item[skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, storeId: _storeId, purchased:false});
   emit ItemAdded(skuCount, item[skuCount].storeId);
-	skuCount += 1;
+	skuCount = skuCount.add(1);
 	return true;
   }
 
