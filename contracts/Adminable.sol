@@ -11,6 +11,7 @@ contract Adminable is Ownable, Pausable {
 
   mapping (address => bool) private admins;
 
+  /// Events
   event AdminAdded(address indexed admin);
   event AdminRemoved(address indexed admin);
 
@@ -18,6 +19,13 @@ contract Adminable is Ownable, Pausable {
     admins[msg.sender] = true;
   }
 
+  /// @notice Fallback function
+  /// Added so ether sent to this contract is reverted if contract fails
+  function() external payable {
+    revert();
+  }
+
+  /// Modifiers
   modifier onlyAdmin() {
     require(isAdmin(msg.sender), "Caller is not an Admin");
     _;

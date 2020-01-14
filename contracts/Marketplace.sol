@@ -12,16 +12,14 @@ contract Marketplace is Adminable {
 
   mapping (address => bool) storeOwners;
 
+  /// Events
   event StoreOwnerAdded(address indexed storeOwner);
   event StoreOwnerRemoved(address indexed storeOwner);
 
+  /// Modifiers
   modifier onlyStoreOwner() {
       require(isStoreOwner(msg.sender), "Caller is not a Store Owner");
       _;
-  }
-
-  function() external payable {
-    revert();
   }
 
   function isStoreOwner(address account)
