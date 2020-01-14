@@ -126,6 +126,12 @@ contract('Stores', function(accounts) {
           const balance = await instance.getBalance({from:random})
           assert.equal(balance, 0, 'only store owner should be able to open store')
         })
+
+        it("should emit the appropriate event when a store is opened", async () => {
+          result = await instance.openStore(storeName, {from:storeOwner})
+          assert.equal(result.logs[0].event, "StoreOpened", "StoreOpened event property not emitted, check openStore method")
+        })
+
       })
 
       describe("closeStore()", async () => {
@@ -135,6 +141,13 @@ contract('Stores', function(accounts) {
           const balance = await instance.getBalance({from:random})
           assert.equal(balance, 0, 'only store owner should be able to close a store')
         })
+
+        it("should emit the appropriate event when a store is closed", async () => {
+          await instance.openStore(storeName, {from:storeOwner})
+          const result = await instance.closeStore(storeId, {from:storeOwner})
+          assert.equal(result.logs[0].event, "StoreClosed", "StoreClosed event property not emitted, check closeStore method")
+        })
+
       })
  })
 
