@@ -6,7 +6,7 @@ contract('Stores', function(accounts) {
     const owner = accounts[0]
     const admin = accounts[1]
     const storeOwner = accounts[2]
-    const random = accounts[3]
+    const buyer = accounts[3]
 
     const storeName = "testName"
     const itemPrice = 3
