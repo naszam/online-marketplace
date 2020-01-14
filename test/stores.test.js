@@ -44,7 +44,7 @@ contract('Stores', function(accounts) {
 
       describe("addAdmin()", async () => {
 
-        it("admin should be able to add an admin", async () => {
+        it("admins should be able to add an admin", async () => {
           await instance.addAdmin(admin2, {from:admin})
           const adminAdded = await instance.isAdmin(admin2, {from:random})
           assert.equal(adminAdded, true, 'only admin can add new admins')
@@ -62,7 +62,7 @@ contract('Stores', function(accounts) {
 
       describe("removeAdmin()", async () => {
 
-        it("admin should be able to remove an admin", async () => {
+        it("admins should be able to remove an admin", async () => {
           await instance.addAdmin(admin2, {from:admin})
           await instance.removeAdmin(admin2, {from:admin})
           const adminRemoved = await instance.isAdmin(admin2, {from:admin})
@@ -121,7 +121,7 @@ contract('Stores', function(accounts) {
 
       describe("openStore()", async () => {
 
-        it("store owner should be able to open a store", async () => {
+        it("store owners should be able to open a store", async () => {
           await instance.openStore(storeName,{from:storeOwner})
           const balance = await instance.getBalance({from:random})
           assert.equal(balance, 0, 'only store owner should be able to open store')
@@ -135,7 +135,7 @@ contract('Stores', function(accounts) {
       })
 
       describe("closeStore()", async () => {
-        it("store owner should be able to close a store", async () => {
+        it("store owners should be able to close a store", async () => {
           await instance.openStore(storeName, {from:storeOwner})
           await instance.closeStore(storeId, {from:storeOwner})
           const balance = await instance.getBalance({from:random})
