@@ -29,6 +29,10 @@ contract('Stores', function(accounts) {
       assert.equal(adminAdded, true, 'only admin can add new admins')
     })
 
+    it("random address should not be able to add an admin", async () => {
+      await catchRevert(instance.addAdmin(admin2, {from:random}))
+    })
+
     it("admin should be able to remove an admin", async () => {
       await instance.addAdmin(admin2, {from:admin})
       await instance.removeAdmin(admin2, {from:admin})
@@ -40,6 +44,10 @@ contract('Stores', function(accounts) {
       await instance.addStoreOwner(storeOwner2, {from:admin})
       const storeOwnerAdded = await instance.isStoreOwner(storeOwner2, {from:random})
       assert.equal(storeOwnerAdded, true, 'only admins should be able to add a store owner')
+    })
+
+    it("random address should not be able to add a store owner", async () => {
+      await catchRevert(instance.addStoreOwner(storeOwner2, {from:random}))
     })
 
     it("admins should be able to remove a store owner", async () => {
