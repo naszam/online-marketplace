@@ -66,7 +66,7 @@ contract Stores is Marketplace {
   function openStore(string memory _name)
     private
     onlyStoreOwner()
-    whenNotPaused
+    whenNotPaused()
     returns(bool)
   {
     store[storeId] = Store({id: storeId, name: _name, owner: msg.sender, isOpen:true});
@@ -79,7 +79,7 @@ contract Stores is Marketplace {
   function withdrawStoreBalance(uint withdrawAmount, uint id)
     public
     onlyStoreOwner()
-    whenNotPaused
+    whenNotPaused()
     returns (uint)
   {
     require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
@@ -93,7 +93,7 @@ contract Stores is Marketplace {
   function closeStore(uint id)
     public
     onlyStoreOwner()
-    whenNotPaused
+    whenNotPaused()
     returns(bool)
   {
 	store[id].isOpen = false;
@@ -105,7 +105,7 @@ contract Stores is Marketplace {
   function addItem(string memory _name, uint _price, uint _quantity, uint _storeId)
     public
     onlyStoreOwner()
-    whenNotPaused
+    whenNotPaused()
     returns(bool)
   {
 	item[skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, storeId: _storeId, purchased:false});
@@ -117,7 +117,7 @@ contract Stores is Marketplace {
   function removeItem(uint sku)
     public
     onlyStoreOwner()
-    whenNotPaused
+    whenNotPaused()
     returns(bool)
   {
 	delete item[sku];
@@ -130,7 +130,7 @@ contract Stores is Marketplace {
     payable
     paidEnough(sku)
     checkValue(sku)
-    whenNotPaused
+    whenNotPaused()
     returns(bool)
  {
   balances[store[item[sku].storeId].owner] = msg.value;

@@ -34,8 +34,8 @@ contract Marketplace is Adminable {
 
   function addStoreOwner(address storeOwner)
     public
-    whenNotPaused
-    onlyAdmin
+    whenNotPaused()
+    onlyAdmin()
     returns(bool)
   {
     storeOwners[storeOwner] = true;
@@ -46,8 +46,8 @@ contract Marketplace is Adminable {
 
    function removeStoreOwner(address storeOwner)
     public
-    whenNotPaused
-    onlyAdmin
+    whenNotPaused()
+    onlyAdmin()
     returns(bool)
    {
      storeOwners[storeOwner] = false;

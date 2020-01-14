@@ -33,8 +33,8 @@ contract Adminable is Ownable, Pausable {
 
   function addAdmin(address account)
     public
-    whenNotPaused
-    onlyAdmin
+    whenNotPaused()
+    onlyAdmin()
   {
     admins[account] = true;
     emit AdminAdded(account);
@@ -42,8 +42,8 @@ contract Adminable is Ownable, Pausable {
 
   function removeAdmin(address account)
     public
-    whenNotPaused
-    onlyAdmin
+    whenNotPaused()
+    onlyAdmin()
   {
     admins[account] = false;
     emit AdminRemoved(account);
