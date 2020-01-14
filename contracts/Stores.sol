@@ -17,8 +17,6 @@ contract Stores is Marketplace {
   mapping (uint => Item) private item;
   mapping (address => uint) private balances;
 
-
- // using address owner as id?
   struct Store {
     uint id;
     string name;
@@ -35,6 +33,7 @@ contract Stores is Marketplace {
     bool purchased;
   }
 
+  /// Events
   event StoreOpened(uint id);
   event StoreBalanceWithdrawal(address storeOwner, uint withdrawAmount, uint newBalance);
   event StoreClosed(uint id);
@@ -42,6 +41,7 @@ contract Stores is Marketplace {
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
 
+  /// Modifiers
   modifier paidEnough(uint _price) {
     require(msg.value >= _price);
     _;
