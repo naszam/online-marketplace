@@ -132,6 +132,10 @@ contract('Stores', function(accounts) {
           assert.equal(result.logs[0].event, "StoreOpened", "StoreOpened event property not emitted, check openStore method")
         })
 
+        it("random address should not be able to open a store", async () => {
+          await catchRevert(instance.openStore(storeOwner2, {from:random}))
+        })
+
       })
 
       describe("closeStore()", async () => {
@@ -146,6 +150,11 @@ contract('Stores', function(accounts) {
           await instance.openStore(storeName, {from:storeOwner})
           const result = await instance.closeStore(storeId, {from:storeOwner})
           assert.equal(result.logs[0].event, "StoreClosed", "StoreClosed event property not emitted, check closeStore method")
+        })
+
+        it("random address should not be able to close a store", async () => {
+          await instance.openStore(storeName, {from:storeOwner})
+          await catchRevert(instance.closeStore(storeId, {from:random}))
         })
 
       })
