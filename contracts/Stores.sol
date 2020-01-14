@@ -64,7 +64,7 @@ contract Stores is Marketplace {
   }
 
   function openStore(string memory _name)
-    private
+    public
     onlyStoreOwner()
     whenNotPaused()
     returns(bool)
