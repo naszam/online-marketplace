@@ -33,12 +33,24 @@ contract('Stores', function(accounts) {
       await catchRevert(instance.addAdmin(admin2, {from:random}))
     })
 
+    it("should emit the appropriate event when an admin is added", async () => {
+      const result = await instance.addAdmin(admin2, {from:admin})
+      assert.equal(result.logs[0].event, "AdminAdded", "AdminAdded event property not emitted, check addAmdin method")
+    })
+
     it("admin should be able to remove an admin", async () => {
       await instance.addAdmin(admin2, {from:admin})
       await instance.removeAdmin(admin2, {from:admin})
       const adminRemoved = await instance.isAdmin(admin2, {from:admin})
       assert.equal(adminRemoved, false, 'only admin can remove admins')
     })
+
+    it("should emit the appropriate event when an admin is removed", async () => {
+      await instance.addAdmin(admin2, {from:admin})
+      const result = await instance.removeAdmin(admin2, {from:admin})
+      assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event property not emitted, check removeAmdin method")
+    })
+
 
     it("random address should not be able to remove an admin", async () => {
       await instance.addAdmin(admin2, {from:admin})
