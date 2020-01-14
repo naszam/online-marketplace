@@ -17,81 +17,125 @@ contract('Stores', function(accounts) {
     const itemSku = 0
     const testAmount = 3
 
+    let instance
+
     beforeEach(async () => {
       instance = await Stores.new()
       await instance.addAdmin(admin, {from:owner})
       await instance.addStoreOwner(storeOwner, {from:admin})
     })
 
-    it("admin should be able to add an admin", async () => {
-      await instance.addAdmin(admin2, {from:admin})
-      const adminAdded = await instance.isAdmin(admin2, {from:random})
-      assert.equal(adminAdded, true, 'only admin can add new admins')
+    describe("Setup", async() => {
+
+        it("OWNER should be set to the deploying address", async() => {
+            const ownerAddress = await instance.owner()
+            assert.equal(ownerAddress, owner, "the deploying address should be the owner")
+        })
+
+        it("Admin should be added when the contract is created", async() => {
+            const instance = await Stores.new()
+            const adminAdded = await instance.isAdmin(owner)
+
+            assert.equal(adminAdded, true, "the owner should be set as admin")
+        })
     })
 
-    it("random address should not be able to add an admin", async () => {
-      await catchRevert(instance.addAdmin(admin2, {from:random}))
-    })
+    describe("Functions", () => {
 
-    it("should emit the appropriate event when an admin is added", async () => {
-      const result = await instance.addAdmin(admin2, {from:admin})
-      assert.equal(result.logs[0].event, "AdminAdded", "AdminAdded event property not emitted, check addAmdin method")
-    })
+      describe("addAdmin()", async () => {
 
-    it("admin should be able to remove an admin", async () => {
-      await instance.addAdmin(admin2, {from:admin})
-      await instance.removeAdmin(admin2, {from:admin})
-      const adminRemoved = await instance.isAdmin(admin2, {from:admin})
-      assert.equal(adminRemoved, false, 'only admin can remove admins')
-    })
+        it("admin should be able to add an admin", async () => {
+          await instance.addAdmin(admin2, {from:admin})
+          const adminAdded = await instance.isAdmin(admin2, {from:random})
+          assert.equal(adminAdded, true, 'only admin can add new admins')
+        })
 
-    it("should emit the appropriate event when an admin is removed", async () => {
-      await instance.addAdmin(admin2, {from:admin})
-      const result = await instance.removeAdmin(admin2, {from:admin})
-      assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event property not emitted, check removeAmdin method")
-    })
+        it("random address should not be able to add an admin", async () => {
+          await catchRevert(instance.addAdmin(admin2, {from:random}))
+        })
 
+        it("should emit the appropriate event when an admin is added", async () => {
+          const result = await instance.addAdmin(admin2, {from:admin})
+          assert.equal(result.logs[0].event, "AdminAdded", "AdminAdded event property not emitted, check addAmdin method")
+        })
+      })
 
-    it("random address should not be able to remove an admin", async () => {
-      await instance.addAdmin(admin2, {from:admin})
-      await catchRevert(instance.removeAdmin(admin2, {from:random}))
-    })
+      describe("removeAdmin()", async () => {
 
-    it("admins should be able to add a store owner", async () => {
-      await instance.addStoreOwner(storeOwner2, {from:admin})
-      const storeOwnerAdded = await instance.isStoreOwner(storeOwner2, {from:random})
-      assert.equal(storeOwnerAdded, true, 'only admins should be able to add a store owner')
-    })
+        it("admin should be able to remove an admin", async () => {
+          await instance.addAdmin(admin2, {from:admin})
+          await instance.removeAdmin(admin2, {from:admin})
+          const adminRemoved = await instance.isAdmin(admin2, {from:admin})
+          assert.equal(adminRemoved, false, 'only admin can remove admins')
+        })
 
-    it("random address should not be able to add a store owner", async () => {
-      await catchRevert(instance.addStoreOwner(storeOwner2, {from:random}))
-    })
+        it("should emit the appropriate event when an admin is removed", async () => {
+          await instance.addAdmin(admin2, {from:admin})
+          const result = await instance.removeAdmin(admin2, {from:admin})
+          assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event property not emitted, check removeAmdin method")
+        })
 
-    it("admins should be able to remove a store owner", async () => {
-      await instance.addStoreOwner(storeOwner2, {from:admin})
-      await instance.removeStoreOwner(storeOwner2, {from:admin})
-      const storeOwnerRemoved = await instance.isStoreOwner(storeOwner2, {from:random})
-      assert.equal(storeOwnerRemoved, false, 'only admins should be able to remove a store owner')
-    })
+        it("random address should not be able to remove an admin", async () => {
+          await instance.addAdmin(admin2, {from:admin})
+          await catchRevert(instance.removeAdmin(admin2, {from:random}))
+        })
+      })
 
-    it("random address should not be able to remove a store owner", async () => {
-      await instance.addStoreOwner(storeOwner2, {from:admin})
-      await catchRevert(instance.removeStoreOwner(storeOwner2, {from:random}))
-    })
+      describe("addStoreOwner()", async () => {
+        it("admins should be able to add a store owner", async () => {
+          await instance.addStoreOwner(storeOwner2, {from:admin})
+          const storeOwnerAdded = await instance.isStoreOwner(storeOwner2, {from:random})
+          assert.equal(storeOwnerAdded, true, 'only admins should be able to add a store owner')
+        })
 
-    it("store owner should be able to open a store", async () => {
-      await instance.openStore(storeName,{from:storeOwner})
-      const balance = await instance.getBalance({from:random})
-      assert.equal(balance, 0, 'only store owner should be able to open store')
-    })
+        it("should emit the appropriate event when a store owner is added", async () => {
+          result = await instance.addStoreOwner(storeOwner2, {from:admin})
+          assert.equal(result.logs[0].event, "StoreOwnerAdded", "StoreOwnerAdded event property not emitted, check addStoreOwner method")
+        })
 
-    it("store owner should be able to close a store", async () => {
-      await instance.openStore(storeName, {from:storeOwner})
-      await instance.closeStore(storeId, {from:storeOwner})
-      const balance = await instance.getBalance({from:random})
-      assert.equal(balance, 0, 'only store owner should be able to close a store')
-    })
+        it("random address should not be able to add a store owner", async () => {
+          await catchRevert(instance.addStoreOwner(storeOwner2, {from:random}))
+        })
+      })
 
+      describe("removeStoreOwner()", async () => {
 
+        it("admins should be able to remove a store owner", async () => {
+          await instance.addStoreOwner(storeOwner2, {from:admin})
+          await instance.removeStoreOwner(storeOwner2, {from:admin})
+          const storeOwnerRemoved = await instance.isStoreOwner(storeOwner2, {from:random})
+          assert.equal(storeOwnerRemoved, false, 'only admins should be able to remove a store owner')
+        })
+
+        it("should emit the appropriate event when a store owner is removed", async () => {
+          await instance.addStoreOwner(storeOwner2, {from:admin})
+          const result = await instance.removeStoreOwner(storeOwner2, {from:admin})
+          assert.equal(result.logs[0].event, "StoreOwnerRemoved", "StoreOwnerRemoved event property not emitted, check removeStoreOwner method")
+        })
+
+        it("random address should not be able to remove a store owner", async () => {
+          await instance.addStoreOwner(storeOwner2, {from:admin})
+          await catchRevert(instance.removeStoreOwner(storeOwner2, {from:random}))
+        })
+      })
+
+      describe("openStore()", async () => {
+
+        it("store owner should be able to open a store", async () => {
+          await instance.openStore(storeName,{from:storeOwner})
+          const balance = await instance.getBalance({from:random})
+          assert.equal(balance, 0, 'only store owner should be able to open store')
+        })
+      })
+
+      describe("closeStore()", async () => {
+        it("store owner should be able to close a store", async () => {
+          await instance.openStore(storeName, {from:storeOwner})
+          await instance.closeStore(storeId, {from:storeOwner})
+          const balance = await instance.getBalance({from:random})
+          assert.equal(balance, 0, 'only store owner should be able to close a store')
+        })
+      })
+ })
 
 })
