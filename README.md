@@ -24,6 +24,10 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g @truffle/hdwallet-provider
     ```
+    - MythX for Truffle:
+    ```sh
+    $ npm install -g truffle-security
+    ```
 ## Running the project with local test network (ganache-cli)
 
    - Start ganache-cli with the following command:
@@ -42,7 +46,10 @@ Clone this GitHub repository.
      ```sh
      $ truffle test
      ```
-
+   - Analyzing the smart contract using MythX for Truffle with the following command:
+     ```sh
+     $ truffle run verify
+     ```
 ## Deploying on Rinkeby's Testnet
   - Get an Ethereum Account on Metamask.
   - On the landing page, click “Get Chrome Extension.”
