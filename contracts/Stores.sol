@@ -11,8 +11,8 @@ contract Stores is Marketplace {
 
   using SafeMath for uint;
 
-  uint storeId = 0;
-  uint skuCount = 0;
+  uint private storeId = 0;
+  uint private skuCount = 0;
   mapping (uint => Store) private store;
   mapping (uint => Item) private item;
   mapping (address => uint) private balances;
@@ -76,7 +76,7 @@ contract Stores is Marketplace {
     return true;
   }
 
-  function withdrawStoreBalance(uint withdrawAmount, uint id)
+  function withdrawStoreBalance(uint withdrawAmount)
     public
     onlyStoreOwner()
     whenNotPaused()
