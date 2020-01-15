@@ -56,7 +56,7 @@ contract('Stores', function(accounts) {
 
         it("should emit the appropriate event when an admin is added", async () => {
           const result = await instance.addAdmin(admin2, {from:admin})
-          assert.equal(result.logs[0].event, "AdminAdded", "AdminAdded event property not emitted, check addAmdin method")
+          assert.equal(result.logs[0].event, "AdminAdded", "AdminAdded event not emitted, check addAmdin method")
         })
       })
 
@@ -72,7 +72,7 @@ contract('Stores', function(accounts) {
         it("should emit the appropriate event when an admin is removed", async () => {
           await instance.addAdmin(admin2, {from:admin})
           const result = await instance.removeAdmin(admin2, {from:admin})
-          assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event property not emitted, check removeAmdin method")
+          assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event not emitted, check removeAmdin method")
         })
 
         it("random address should not be able to remove an admin", async () => {
@@ -90,7 +90,7 @@ contract('Stores', function(accounts) {
 
         it("should emit the appropriate event when a store owner is added", async () => {
           result = await instance.addStoreOwner(storeOwner2, {from:admin})
-          assert.equal(result.logs[0].event, "StoreOwnerAdded", "StoreOwnerAdded event property not emitted, check addStoreOwner method")
+          assert.equal(result.logs[0].event, "StoreOwnerAdded", "StoreOwnerAdded event not emitted, check addStoreOwner method")
         })
 
         it("random address should not be able to add a store owner", async () => {
@@ -110,7 +110,7 @@ contract('Stores', function(accounts) {
         it("should emit the appropriate event when a store owner is removed", async () => {
           await instance.addStoreOwner(storeOwner2, {from:admin})
           const result = await instance.removeStoreOwner(storeOwner2, {from:admin})
-          assert.equal(result.logs[0].event, "StoreOwnerRemoved", "StoreOwnerRemoved event property not emitted, check removeStoreOwner method")
+          assert.equal(result.logs[0].event, "StoreOwnerRemoved", "StoreOwnerRemoved event not emitted, check removeStoreOwner method")
         })
 
         it("random address should not be able to remove a store owner", async () => {
@@ -129,7 +129,7 @@ contract('Stores', function(accounts) {
 
         it("should emit the appropriate event when a store is opened", async () => {
           result = await instance.openStore(storeName, {from:storeOwner})
-          assert.equal(result.logs[0].event, "StoreOpened", "StoreOpened event property not emitted, check openStore method")
+          assert.equal(result.logs[0].event, "StoreOpened", "StoreOpened event not emitted, check openStore method")
         })
 
         it("random address should not be able to open a store", async () => {
@@ -149,7 +149,7 @@ contract('Stores', function(accounts) {
         it("should emit the appropriate event when a store is closed", async () => {
           await instance.openStore(storeName, {from:storeOwner})
           const result = await instance.closeStore(storeId, {from:storeOwner})
-          assert.equal(result.logs[0].event, "StoreClosed", "StoreClosed event property not emitted, check closeStore method")
+          assert.equal(result.logs[0].event, "StoreClosed", "StoreClosed event not emitted, check closeStore method")
         })
 
         it("random address should not be able to close a store", async () => {
