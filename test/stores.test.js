@@ -81,6 +81,5 @@ contract('Stores', function(accounts) {
         })
 
       })
- })
-
+   })
 })
