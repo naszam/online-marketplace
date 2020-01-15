@@ -19,12 +19,17 @@ contract('Stores', function(accounts) {
 
     let instance
 
+    // Before each test I'm going to
+    // add an admin from owner that is set as admin when the contract is deployed
+    // add a store owner using the admin account just added
     beforeEach(async () => {
       instance = await Stores.new()
       await instance.addAdmin(admin, {from:owner})
       await instance.addStoreOwner(storeOwner, {from:admin})
     })
 
+    // Check that the owner is set as the deploying address
+    // Check that the owner is set as admin when the contract is deployed
     describe("Setup", async() => {
 
         it("OWNER should be set to the deploying address", async() => {
@@ -42,6 +47,9 @@ contract('Stores', function(accounts) {
 
     describe("Functions", () => {
 
+      // Check openStore() for success when a store owner is trying to open a store
+      // Check openStore() for sucessfully emit event when the store is opened
+      // Check openStore() for failure when a random address try to open a store
       describe("openStore()", async () => {
 
         it("store owners should be able to open a store", async () => {
@@ -61,6 +69,9 @@ contract('Stores', function(accounts) {
 
       })
 
+      // Check closeStore() for success when a store owner is trying to close a store
+      // Check closeStore() for sucessfully emit event when the store is closed
+      // Check closeStore() for failure when a random address try to close a store
       describe("closeStore()", async () => {
         it("store owners should be able to close a store", async () => {
           await instance.openStore(storeName, {from:storeOwner})
