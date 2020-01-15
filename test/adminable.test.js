@@ -54,7 +54,7 @@ contract('Adminable', function(accounts) {
       })
 
       it("random address should not be able to add an admin", async () => {
-        await catchRevert(instance.addAdmin(admin2, {from:random})
+        await catchRevert(instance.addAdmin(admin2, {from:random}))
       })
     })
 
