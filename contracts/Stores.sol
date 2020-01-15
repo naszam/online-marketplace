@@ -58,6 +58,7 @@ contract Stores is Marketplace {
   function getBalance()
     public
     view
+    whenNotPaused()
     returns (uint)
   {
     return balances[msg.sender];
@@ -74,6 +75,15 @@ contract Stores is Marketplace {
     emit StoreOpened(storeId);
     storeId = storeId.add(1);
     return true;
+  }
+
+  function isStoreOpen(uint id)
+    public
+    view
+    whenNotPaused()
+    returns(bool)
+  {
+    return store[id].isOpen;
   }
 
   function withdrawStoreBalance(uint withdrawAmount)

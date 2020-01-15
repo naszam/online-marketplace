@@ -54,8 +54,8 @@ contract('Stores', function(accounts) {
 
         it("store owners should be able to open a store", async () => {
           await instance.openStore(storeName,{from:storeOwner})
-          const balance = await instance.getBalance({from:random})
-          assert.equal(balance, 0, 'only store owner should be able to open store')
+          const storeOpened = await instance.isStoreOpen(storeId, {from:random})
+          assert.isTrue(storeOpened, 'only store owner should be able to open store')
         })
 
         it("should emit the appropriate event when a store is opened", async () => {
@@ -76,8 +76,8 @@ contract('Stores', function(accounts) {
         it("store owners should be able to close a store", async () => {
           await instance.openStore(storeName, {from:storeOwner})
           await instance.closeStore(storeId, {from:storeOwner})
-          const balance = await instance.getBalance({from:random})
-          assert.equal(balance, 0, 'only store owner should be able to close a store')
+          const storeOpened = await instance.isStoreOpen(storeId, {from:random})
+          assert.isFalse(storeOpened, 'only store owner should be able to close a store')
         })
 
         it("should emit the appropriate event when a store is closed", async () => {
