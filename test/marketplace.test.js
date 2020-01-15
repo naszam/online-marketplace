@@ -38,7 +38,9 @@ contract('Marketplace', function(accounts) {
   })
   describe("Functions", () => {
 
-
+    // Check addStoreOwner() for success when an admin is trying to add a store owner
+    // Check addStoreOwner() for sucessfully emit event when the store owner is added
+    // Check addStoreOwner() for failure when a random address try to add a store owner
     describe("addStoreOwner()", async () => {
       it("admins should be able to add a store owner", async () => {
         await instance.addStoreOwner(storeOwner2, {from:admin})
@@ -56,6 +58,9 @@ contract('Marketplace', function(accounts) {
       })
     })
 
+    // Check removeStoreOwner() for success when an admin is trying to remove a store owner
+    // Check removeStoreOwner() for sucessfully emit event when a store owner is removed
+    // Check removeStoreOwner() for failure when a random address try to remove a store owner
     describe("removeStoreOwner()", async () => {
 
       it("admins should be able to remove a store owner", async () => {
