@@ -10,7 +10,7 @@ import "./Adminable.sol";
 contract Marketplace is Adminable {
 
 
-  mapping (address => bool) storeOwners;
+  mapping (address => bool) private storeOwners;
 
   /// Events
   event StoreOwnerAdded(address indexed storeOwner);
