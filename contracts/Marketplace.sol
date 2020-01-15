@@ -25,6 +25,7 @@ contract Marketplace is Adminable {
   function isStoreOwner(address account)
     public
     view
+    whenNotPaused()
     returns(bool)
   {
     return storeOwners[account];
