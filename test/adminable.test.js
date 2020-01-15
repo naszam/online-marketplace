@@ -11,11 +11,15 @@ contract('Adminable', function(accounts) {
 
   let instance
 
+  // Before each test I'm going to
+  // add an admin from owner that is set as admin when the contract is deployed
   beforeEach(async () => {
     instance = await Adminable.new()
     await instance.addAdmin(admin, {from:owner})
   })
 
+  // Check that the owner is set as the deploying address
+  // Check that the owner is set as admin when the contract is deployed
   describe("Setup", async() => {
 
       it("OWNER should be set to the deploying address", async() => {
@@ -33,6 +37,9 @@ contract('Adminable', function(accounts) {
 
   describe("Functions", () => {
 
+    // Check addAdmin() for success when an admin is adding a new admin
+    // Check addAdmin() for sucessfully emit event when the admin is added
+    // Check addAdmin() for failure when a random address try to add a new admin
     describe("addAdmin()", async () => {
 
       it("admins should be able to add an admin", async () => {
@@ -41,16 +48,19 @@ contract('Adminable', function(accounts) {
         assert.isTrue(adminAdded, 'only admin can add new admins')
       })
 
-      it("random address should not be able to add an admin", async () => {
-        await catchRevert(instance.addAdmin(admin2, {from:random}))
-      })
-
       it("should emit the appropriate event when an admin is added", async () => {
         const result = await instance.addAdmin(admin2, {from:admin})
         assert.equal(result.logs[0].event, "AdminAdded", "AdminAdded event not emitted, check addAmdin method")
       })
+
+      it("random address should not be able to add an admin", async () => {
+        await catchRevert(instance.addAdmin(admin2, {from:random})
+      })
     })
 
+    // Check removeAdmin() for success when an admin is removing an admin
+    // Check remvoveAdmin() for sucessfully emit event when the admin is removed
+    // Check removeAdmin() for failure when a random address try to remove an admin
     describe("removeAdmin()", async () => {
 
       it("admins should be able to remove an admin", async () => {

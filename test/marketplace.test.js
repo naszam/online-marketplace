@@ -13,11 +13,15 @@ contract('Marketplace', function(accounts) {
 
   let instance
 
+  // Before each test I'm going to
+  // add an admin from owner that is set as admin when the contract is deployed
   beforeEach(async () => {
     instance = await Marketplace.new()
     await instance.addAdmin(admin, {from:owner})
   })
 
+  // Check that the owner is set as the deploying address
+  // Check that the owner is set as admin when the contract is deployed
   describe("Setup", async() => {
 
       it("OWNER should be set to the deploying address", async() => {
