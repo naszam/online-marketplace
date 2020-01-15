@@ -11,10 +11,10 @@ contract Stores is Marketplace {
 
   using SafeMath for uint;
 
-  uint private storeId = 0;
+  uint private storeCount = 0;
   uint private skuCount = 0;
   mapping (uint => Store) private store;
-  mapping (uint => Item) private item;
+  mapping (uint => mapping (uint => Item)) private item;
   mapping (address => uint) private balances;
 
   struct Store {
@@ -29,14 +29,13 @@ contract Stores is Marketplace {
     string name;
     uint price;
     uint quantity;
-    uint storeId;
     bool purchased;
   }
 
   /// Events
-  event StoreOpened(uint id);
+  event StoreOpened(uint storeId);
   event StoreBalanceWithdrawal(address storeOwner, uint withdrawAmount, uint newBalance);
-  event StoreClosed(uint id);
+  event StoreClosed(uint storeId);
   event ItemAdded(uint sku, uint storeId);
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
@@ -47,9 +46,9 @@ contract Stores is Marketplace {
     _;
   }
 
-  modifier checkValue(uint _sku) {
+  modifier checkValue(uint _storeId, uint _sku) {
     _;
-    uint price = item[_sku].price;
+    uint price = item[_storeId][_sku].price;
     uint amountToRefund = msg.value.sub(price);
     (bool success, ) = msg.sender.call.value(amountToRefund)("");
     require(success, "Transfer Failed");
@@ -64,14 +63,27 @@ contract Stores is Marketplace {
     return balances[msg.sender];
   }
 
-  function isStoreOpen(uint id)
+  function isStoreOpen(uint storeId)
     public
     view
     whenNotPaused()
     returns(bool)
   {
-    return store[id].isOpen;
+    return store[storeId].isOpen;
   }
+
+  function fetchItem(uint storeId, uint sku)
+   public
+   view
+   whenNotPaused()
+   returns(string memory name, uint price, uint quantity, bool purchased)
+   {
+     name = item[storeId][sku].name;
+     price = item[storeId][sku].price;
+     quantity = item[storeId][sku].quantity;
+     purchased = item[storeId][sku].purchased;
+     return (name, price, quantity, purchased);
+   }
 
   function openStore(string memory _name)
     public
@@ -79,10 +91,10 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
   {
-    store[storeId] = Store({id: storeId, name: _name, owner: msg.sender, isOpen:true});
+    store[storeCount] = Store({id: storeCount, name: _name, owner: msg.sender, isOpen:true});
     balances[msg.sender] = 0;
-    emit StoreOpened(storeId);
-    storeId = storeId.add(1);
+    emit StoreOpened(storeCount);
+    storeCount = storeCount.add(1);
     return true;
   }
 
@@ -100,16 +112,16 @@ contract Stores is Marketplace {
     return balances[msg.sender];
   }
 
-  function closeStore(uint id)
+  function closeStore(uint storeId)
     public
     onlyStoreOwner()
     whenNotPaused()
     returns(bool)
   {
-	store[id].isOpen = false;
-	(bool success, ) = store[item[id].storeId].owner.call.value(balances[store[item[id].storeId].owner])("");
+	store[storeId].isOpen = false;
+	(bool success, ) = store[storeId].owner.call.value(balances[store[storeId].owner])("");
   require(success, "Transfer failed.");
-	emit StoreClosed(id);
+	emit StoreClosed(storeId);
   }
 
   function addItem(string memory _name, uint _price, uint _quantity, uint _storeId)
@@ -118,34 +130,34 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
   {
-	item[skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, storeId: _storeId, purchased:false});
-  emit ItemAdded(skuCount, item[skuCount].storeId);
+	item[_storeId][skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, purchased:false});
+  emit ItemAdded(skuCount, _storeId);
 	skuCount = skuCount.add(1);
 	return true;
   }
 
-  function removeItem(uint sku)
+  function removeItem(uint storeId, uint sku)
     public
     onlyStoreOwner()
     whenNotPaused()
     returns(bool)
   {
-	delete item[sku];
-	emit ItemRemoved(sku, item[sku].storeId);
+	delete item[storeId][sku];
+	emit ItemRemoved(storeId, sku);
 	return true;
   }
 
-  function buyItem(uint sku)
+  function buyItem(uint storeId, uint sku)
     public
     payable
-    paidEnough(sku)
-    checkValue(sku)
+    paidEnough(item[storeId][sku].price)
+    checkValue(storeId, sku)
     whenNotPaused()
     returns(bool)
  {
-  balances[store[item[sku].storeId].owner] = msg.value;
-	item[sku].purchased = true;
-	emit ItemPurchased(sku, item[sku].storeId);
+  balances[store[storeId].owner] = msg.value;
+	item[storeId][sku].purchased = true;
+	emit ItemPurchased(storeId, sku);
  }
 
 }
