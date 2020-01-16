@@ -156,9 +156,9 @@ contract('Stores', function(accounts) {
            await instance.openStore(storeOwner2, {from:storeOwner})
            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
            await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
-           const result = await instance.fetchItem(storeId, itemSku, {from:random})
+           const quantity = await instance.fetchItem(storeId, itemSku, {from:random})
            const balance = await instance.getBalance({from:storeOwner})
-           assert.equal(result[2], 0, "the quantity of the bought item does not match the expected value")
+           assert.equal(quantity[2], 0, "the quantity of the bought item does not match the expected value")
            assert.equal(balance, 3, "the store balance available after the item is bought should increase to match the expected value")
          })
 
