@@ -11,8 +11,8 @@ contract Stores is Marketplace {
 
   using SafeMath for uint;
 
-  uint private storeCount = 0;
-  uint private skuCount = 0;
+  uint private storeCount;
+  uint private skuCount;
   mapping (uint => Store) private store;
   mapping (uint => mapping (uint => Item)) private item;
   mapping (address => uint) private balances;
