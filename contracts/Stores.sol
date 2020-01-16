@@ -51,6 +51,7 @@ contract Stores is Marketplace {
     uint price = item[_storeId][_sku].price;
     uint amountToRefund = msg.value.sub(price.mul(_quantity));
     require(amountToRefund > 0);
+    balances[store[_storeId].owner] = balances[store[_storeId].owner].sub(amountToRefund);
     (bool success, ) = msg.sender.call.value(amountToRefund)("");
     require(success, "Transfer Failed");
   }
