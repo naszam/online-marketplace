@@ -46,10 +46,10 @@ contract Stores is Marketplace {
     _;
   }
 
-  modifier checkValue(uint _storeId, uint _sku) {
+  modifier checkValue(uint _storeId, uint _sku, uint _quantity) {
     _;
     uint price = item[_storeId][_sku].price;
-    uint amountToRefund = msg.value.sub(price);
+    uint amountToRefund = msg.value.sub(price.mul(_quantity));
     (bool success, ) = msg.sender.call.value(amountToRefund)("");
     require(success, "Transfer Failed");
   }
@@ -151,7 +151,7 @@ contract Stores is Marketplace {
     public
     payable
     paidEnough(item[storeId][sku].price)
-    checkValue(storeId, sku)
+    checkValue(storeId, sku, quantity)
     whenNotPaused()
     returns(bool)
  {
