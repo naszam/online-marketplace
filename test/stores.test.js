@@ -106,7 +106,7 @@ contract('Stores', function(accounts) {
           assert.equal(result[0], itemName, "the name of the last added item does not match the expected value")
           assert.equal(result[1], itemPrice, "the price of the last added item does not match the expected value")
           assert.equal(result[2], itemQuantity, "the quantinty of the last added item does not match the expected value")
-          assert.isFalse(result[3], 'the purchased state of item should be set on 0')
+          assert.isTrue(result[3], "the purchased state of item should be set on true")
         })
 
         it("should emit the appropriate event when an item is added", async () => {
@@ -119,7 +119,35 @@ contract('Stores', function(accounts) {
           await instance.openStore(storeOwner2, {from:storeOwner})
           await catchRevert(instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:random}))
         })
+      })
 
+        // Check removeItem() for success when a store owner is trying to remove an item
+        // Check removeItem() for sucessfully emit event when an item is removed
+        // Check removeItem() for failure when a random address try to remove an item
+        describe("removeItem()", async () => {
+          it("store owners should be able to remove an Item", async () => {
+            await instance.openStore(storeName,{from:storeOwner})
+            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+            await instance.removeItem(storeId, itemSku, {from:storeOwner})
+            result = await instance.fetchItem(storeId, itemSku, {from:random})
+            assert.equal(result[0], itemName, "the name of the last added item does not match the expected value")
+            assert.equal(result[1], 0, "the price of the last added item does not match the expected value")
+            assert.equal(result[2], 0, "the quantinty of the last added item does not match the expected value")
+            assert.isFalse(result[3], "the availability state of item should be set on false")
+          })
+
+          it("should emit the appropriate event when an item is removed", async () => {
+            await instance.openStore(storeName, {from:storeOwner})
+            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+            result = await instance.removeItem(storeId, itemSku, {from:storeOwner})
+            assert.equal(result.logs[0].event, "ItemRemoved", "ItemRemoved event not emitted, check removeItem method")
+          })
+
+          it("random address should not be able to remove an item", async () => {
+            await instance.openStore(storeOwner2, {from:storeOwner})
+            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+            await catchRevert(instance.removeItem(storeId, itemSku, {from:random}))
+          })
       })
    })
 })
