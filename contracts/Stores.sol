@@ -147,7 +147,7 @@ contract Stores is Marketplace {
 	return true;
   }
 
-  function buyItem(uint storeId, uint sku)
+  function buyItem(uint storeId, uint sku, uint quantity)
     public
     payable
     paidEnough(item[storeId][sku].price)
@@ -155,7 +155,8 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
  {
-  balances[store[storeId].owner] = msg.value;
+  balances[store[storeId].owner] = balances[store[storeId].owner].add(msg.value);
+  item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
 	item[storeId][sku].purchased = true;
 	emit ItemPurchased(storeId, sku);
  }
