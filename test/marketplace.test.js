@@ -49,7 +49,7 @@ contract('Marketplace', function(accounts) {
       })
 
       it("should emit the appropriate event when a store owner is added", async () => {
-        result = await instance.addStoreOwner(storeOwner2, {from:admin})
+        const result = await instance.addStoreOwner(storeOwner2, {from:admin})
         assert.equal(result.logs[0].event, "StoreOwnerAdded", "StoreOwnerAdded event not emitted, check addStoreOwner method")
       })
 

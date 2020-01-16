@@ -61,7 +61,7 @@ contract('Stores', function(accounts) {
         })
 
         it("should emit the appropriate event when a store is opened", async () => {
-          result = await instance.openStore(storeName, {from:storeOwner})
+          const result = await instance.openStore(storeName, {from:storeOwner})
           assert.equal(result.logs[0].event, "StoreOpened", "StoreOpened event not emitted, check openStore method")
         })
 
@@ -102,7 +102,7 @@ contract('Stores', function(accounts) {
         it("store owners should be able to add an Item", async () => {
           await instance.openStore(storeName,{from:storeOwner})
           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
-          result = await instance.fetchItem(storeId, itemSku, {from:random})
+          const result = await instance.fetchItem(storeId, itemSku, {from:random})
           assert.equal(result[0], itemName, "the name of the last added item does not match the expected value")
           assert.equal(result[1], itemPrice, "the price of the last added item does not match the expected value")
           assert.equal(result[2], itemQuantity, "the quantinty of the last added item does not match the expected value")
@@ -111,7 +111,7 @@ contract('Stores', function(accounts) {
 
         it("should emit the appropriate event when an item is added", async () => {
           await instance.openStore(storeName, {from:storeOwner})
-          result = await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+          const result = await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
           assert.equal(result.logs[0].event, "ItemAdded", "ItemAdded event not emitted, check addItem method")
         })
 
@@ -129,7 +129,7 @@ contract('Stores', function(accounts) {
             await instance.openStore(storeName,{from:storeOwner})
             await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
             await instance.removeItem(storeId, itemSku, {from:storeOwner})
-            result = await instance.fetchItem(storeId, itemSku, {from:random})
+            const result = await instance.fetchItem(storeId, itemSku, {from:random})
             assert.equal(result[0], itemName, "the name of the last added item does not match the expected value")
             assert.equal(result[1], 0, "the price of the last added item does not match the expected value")
             assert.equal(result[2], 0, "the quantinty of the last added item does not match the expected value")
@@ -139,7 +139,7 @@ contract('Stores', function(accounts) {
           it("should emit the appropriate event when an item is removed", async () => {
             await instance.openStore(storeName, {from:storeOwner})
             await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
-            result = await instance.removeItem(storeId, itemSku, {from:storeOwner})
+            const result = await instance.removeItem(storeId, itemSku, {from:storeOwner})
             assert.equal(result.logs[0].event, "ItemRemoved", "ItemRemoved event not emitted, check removeItem method")
           })
 
@@ -152,20 +152,20 @@ contract('Stores', function(accounts) {
 
        describe("buyItem()", async () => {
 
-      /*   it("should allow someone to purchase an item and update state accordingly", async () => {
+          it("should allow someone to purchase an item and update state accordingly", async () => {
            await instance.openStore(storeOwner2, {from:storeOwner})
            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
-           await instance.buyItem(storeId, itemSku, 3, {from:random})
-
-           result = await instance.getBalance({from:storeOwner})
-           totCost = 3*itemPrice
-           assert.isAbove(result[0], totCost, "store owner balance should be increased by the price of the item times the quantity")
-         }) */
+           await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           const result = await instance.fetchItem(storeId, itemSku, {from:random})
+           const balance = await instance.getBalance({from:storeOwner})
+           assert.equal(result[2], 0, "the quantity of the bought item does not match the expected value")
+           assert.equal(balance, 3, "the balance available after the item is bought should increase to match the expected value")
+         })
 
          it("should emit the appropriate event when an item is bought", async () => {
            await instance.openStore(storeOwner2, {from:storeOwner})
            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
-           result = await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           const result = await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
            assert.equal(result.logs[0].event, "ItemPurchased", "ItemPurchased event not emitted, check buyItem method")
           })
 
