@@ -13,8 +13,8 @@ contract('Stores', function(accounts) {
 
     const storeName = "testStoreName"
     const itemName = "testItemName"
-    const itemPrice = 3
-    const itemQuantity = 5
+    const itemPrice = 1
+    const itemQuantity = 3
     const storeId = 0
     const itemSku = 0
     const testAmount = 3
@@ -148,6 +148,27 @@ contract('Stores', function(accounts) {
             await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
             await catchRevert(instance.removeItem(storeId, itemSku, {from:random}))
           })
-      })
-   })
-})
+       })
+
+       describe("buyItem()", async () => {
+
+      /*   it("should allow someone to purchase an item and update state accordingly", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           await instance.buyItem(storeId, itemSku, 3, {from:random})
+
+           result = await instance.getBalance({from:storeOwner})
+           totCost = 3*itemPrice
+           assert.isAbove(result[0], totCost, "store owner balance should be increased by the price of the item times the quantity")
+         }) */
+
+         it("should emit the appropriate event when an item is bought", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           result = await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           assert.equal(result.logs[0].event, "ItemPurchased", "ItemPurchased event not emitted, check buyItem method")
+          })
+
+       })
+    })
+  })
