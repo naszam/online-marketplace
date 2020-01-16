@@ -175,6 +175,12 @@ contract('Stores', function(accounts) {
            catchRevert(instance.buyItem(storeId, itemSku, 3, {from:buyer, value:2}))
           })
 
+         it("should error if the quantity asked for the item is more than the availability", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           catchRevert(instance.buyItem(storeId, itemSku, 5, {from:buyer, value:2}))
+          })
+
        })
     })
   })
