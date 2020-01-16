@@ -29,7 +29,7 @@ contract Stores is Marketplace {
     string name;
     uint price;
     uint quantity;
-    bool purchased;
+    bool available;
   }
 
   /// Events
@@ -76,13 +76,13 @@ contract Stores is Marketplace {
    public
    view
    whenNotPaused()
-   returns(string memory name, uint price, uint quantity, bool purchased)
+   returns(string memory name, uint price, uint quantity, bool available)
    {
      name = item[storeId][sku].name;
      price = item[storeId][sku].price;
      quantity = item[storeId][sku].quantity;
-     purchased = item[storeId][sku].purchased;
-     return (name, price, quantity, purchased);
+     available = item[storeId][sku].available;
+     return (name, price, quantity, available);
    }
 
   function openStore(string memory _name)
@@ -130,7 +130,7 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
   {
-	item[_storeId][skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, purchased:false});
+	item[_storeId][skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, available:true});
   emit ItemAdded(skuCount, _storeId);
 	skuCount = skuCount.add(1);
 	return true;
@@ -142,7 +142,9 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
   {
-	delete item[storeId][sku];
+  item[storeId][sku].price = 0;
+  item[storeId][sku].quantity = 0;
+  item[storeId][sku].available = false;
 	emit ItemRemoved(storeId, sku);
 	return true;
   }
@@ -157,7 +159,6 @@ contract Stores is Marketplace {
  {
   balances[store[storeId].owner] = balances[store[storeId].owner].add(msg.value);
   item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
-	item[storeId][sku].purchased = true;
 	emit ItemPurchased(storeId, sku);
  }
 
