@@ -57,6 +57,7 @@ contract Stores is Marketplace {
   function getBalance()
     public
     view
+    onlyStoreOwner()
     whenNotPaused()
     returns (uint)
   {
