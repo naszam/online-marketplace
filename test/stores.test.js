@@ -159,7 +159,7 @@ contract('Stores', function(accounts) {
            const result = await instance.fetchItem(storeId, itemSku, {from:random})
            const balance = await instance.getBalance({from:storeOwner})
            assert.equal(result[2], 0, "the quantity of the bought item does not match the expected value")
-           assert.equal(balance, 3, "the balance available after the item is bought should increase to match the expected value")
+           assert.equal(balance, 3, "the store balance available after the item is bought should increase to match the expected value")
          })
 
          it("should emit the appropriate event when an item is bought", async () => {
@@ -167,6 +167,12 @@ contract('Stores', function(accounts) {
            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
            const result = await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
            assert.equal(result.logs[0].event, "ItemPurchased", "ItemPurchased event not emitted, check buyItem method")
+          })
+
+         it("should error when not enough value is sent when purchasing an item", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           catchRevert(instance.buyItem(storeId, itemSku, 3, {from:buyer, value:2}))
           })
 
        })
