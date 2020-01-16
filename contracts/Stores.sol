@@ -41,8 +41,8 @@ contract Stores is Marketplace {
   event ItemPurchased(uint sku, uint storeId);
 
   /// Modifiers
-  modifier paidEnough(uint _price) {
-    require(msg.value >= _price);
+  modifier paidEnough(uint _storeId, uint _sku, uint _quantity) {
+    require(_quantity >= item[_storeId][_sku].quantity && msg.value >= item[_storeId][_sku].price);
     _;
   }
 
@@ -98,20 +98,6 @@ contract Stores is Marketplace {
     return true;
   }
 
-  function withdrawStoreBalance(uint withdrawAmount)
-    public
-    onlyStoreOwner()
-    whenNotPaused()
-    returns (uint)
-  {
-    require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
-    balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
-    (bool success, ) = msg.sender.call.value(withdrawAmount)("");
-    require(success, "Transfer failed.");
-    emit StoreBalanceWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
-    return balances[msg.sender];
-  }
-
   function closeStore(uint storeId)
     public
     onlyStoreOwner()
@@ -152,7 +138,7 @@ contract Stores is Marketplace {
   function buyItem(uint storeId, uint sku, uint quantity)
     public
     payable
-    paidEnough(item[storeId][sku].price)
+    paidEnough(storeId, sku, quantity)
     checkValue(storeId, sku, quantity)
     whenNotPaused()
     returns(bool)
@@ -161,5 +147,19 @@ contract Stores is Marketplace {
   item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
 	emit ItemPurchased(storeId, sku);
  }
+
+   function withdrawStoreBalance(uint withdrawAmount)
+     public
+     onlyStoreOwner()
+     whenNotPaused()
+     returns (uint)
+   {
+     require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
+     balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
+     (bool success, ) = msg.sender.call.value(withdrawAmount)("");
+     require(success, "Transfer failed.");
+     emit StoreBalanceWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+     return balances[msg.sender];
+   }
 
 }
