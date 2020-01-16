@@ -45,7 +45,7 @@ contract('Adminable', function(accounts) {
       it("admins should be able to add an admin", async () => {
         await instance.addAdmin(admin2, {from:admin})
         const adminAdded = await instance.isAdmin(admin2, {from:random})
-        assert.isTrue(adminAdded, 'only admin can add new admins')
+        assert.isTrue(adminAdded, "only admin can add new admins")
       })
 
       it("should emit the appropriate event when an admin is added", async () => {
@@ -67,7 +67,7 @@ contract('Adminable', function(accounts) {
         await instance.addAdmin(admin2, {from:admin})
         await instance.removeAdmin(admin2, {from:admin})
         const adminRemoved = await instance.isAdmin(admin2, {from:admin})
-        assert.isFalse(adminRemoved, 'only admin can remove admins')
+        assert.isFalse(adminRemoved, "only admin can remove admins")
       })
 
       it("should emit the appropriate event when an admin is removed", async () => {

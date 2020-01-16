@@ -45,7 +45,7 @@ contract('Marketplace', function(accounts) {
       it("admins should be able to add a store owner", async () => {
         await instance.addStoreOwner(storeOwner2, {from:admin})
         const storeOwnerAdded = await instance.isStoreOwner(storeOwner2, {from:random})
-        assert.isTrue(storeOwnerAdded, 'only admins should be able to add a store owner')
+        assert.isTrue(storeOwnerAdded, "only admins should be able to add a store owner")
       })
 
       it("should emit the appropriate event when a store owner is added", async () => {
@@ -67,7 +67,7 @@ contract('Marketplace', function(accounts) {
         await instance.addStoreOwner(storeOwner2, {from:admin})
         await instance.removeStoreOwner(storeOwner2, {from:admin})
         const storeOwnerRemoved = await instance.isStoreOwner(storeOwner2, {from:random})
-        assert.isFalse(storeOwnerRemoved, 'only admins should be able to remove a store owner')
+        assert.isFalse(storeOwnerRemoved, "only admins should be able to remove a store owner")
       })
 
       it("should emit the appropriate event when a store owner is removed", async () => {
