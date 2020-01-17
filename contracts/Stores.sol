@@ -42,7 +42,7 @@ contract Stores is Marketplace {
 
   /// Modifiers
   modifier paidEnough(uint _storeId, uint _sku, uint _quantity) {
-    require(_quantity <= item[_storeId][_sku].quantity && msg.value >= item[_storeId][_sku].price);
+    require(_quantity > 0 && _quantity <= item[_storeId][_sku].quantity && msg.value >= (item[_storeId][_sku].price.mul(_quantity)));
     _;
   }
 
