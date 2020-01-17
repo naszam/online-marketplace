@@ -111,6 +111,7 @@ contract Stores is Marketplace {
 	(bool success, ) = store[storeId].owner.call.value(balances[store[storeId].owner])("");
   require(success, "Transfer failed.");
 	emit StoreClosed(storeId);
+	return true;
   }
 
   function addItem(string memory _name, uint _price, uint _quantity, uint _storeId)
@@ -150,6 +151,7 @@ contract Stores is Marketplace {
     balances[store[storeId].owner] = balances[store[storeId].owner].add(msg.value);
     item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
     emit ItemPurchased(storeId, sku);
+    return true;
  }
 
    function withdrawStoreBalance(uint withdrawAmount)
