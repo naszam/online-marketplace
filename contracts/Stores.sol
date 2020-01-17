@@ -34,7 +34,7 @@ contract Stores is Marketplace {
 
   /// Events
   event StoreOpened(uint storeId);
-  event StoreBalanceWithdrawal(address storeOwner, uint withdrawAmount, uint newBalance);
+  event StoreBalanceWithdrawn(address storeOwner, uint withdrawAmount, uint newBalance);
   event StoreClosed(uint storeId);
   event ItemAdded(uint sku, uint storeId);
   event ItemRemoved(uint sku, uint storeId);
@@ -161,7 +161,7 @@ contract Stores is Marketplace {
      balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
      (bool success, ) = msg.sender.call.value(withdrawAmount)("");
      require(success, "Transfer failed.");
-     emit StoreBalanceWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+     emit StoreBalanceWithdrawn(msg.sender, withdrawAmount, balances[msg.sender]);
      return balances[msg.sender];
    }
 
