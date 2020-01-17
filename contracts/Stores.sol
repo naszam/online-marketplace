@@ -42,7 +42,7 @@ contract Stores is Marketplace {
 
   /// Modifiers
   modifier paidEnough(uint _storeId, uint _sku, uint _quantity) {
-    require(_quantity > 0 && _quantity <= item[_storeId][_sku].quantity && msg.value >= (item[_storeId][_sku].price.mul(_quantity)));
+    require(_quantity > 0 && item[_storeId][_sku].quantity >= _quantity && msg.value >= (item[_storeId][_sku].price.mul(_quantity)));
     _;
   }
 
@@ -146,9 +146,10 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
  {
-  balances[store[storeId].owner] = balances[store[storeId].owner].add(msg.value);
-  item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
-	emit ItemPurchased(storeId, sku);
+    require(item[storeId][sku].available);	 
+    balances[store[storeId].owner] = balances[store[storeId].owner].add(msg.value);
+    item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
+    emit ItemPurchased(storeId, sku);
  }
 
    function withdrawStoreBalance(uint withdrawAmount)
