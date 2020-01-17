@@ -43,17 +43,21 @@ contract Adminable is Ownable, Pausable {
     public
     whenNotPaused()
     onlyAdmin()
+    returns (bool)
   {
     admins[account] = true;
     emit AdminAdded(account);
+    return true;
   }
 
   function removeAdmin(address account)
     public
     whenNotPaused()
     onlyAdmin()
+    returns (bool)
   {
     admins[account] = false;
     emit AdminRemoved(account);
+    return true;
   }
 }
