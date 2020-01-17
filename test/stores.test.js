@@ -75,11 +75,13 @@ contract('Stores', function(accounts) {
       // Check closeStore() for sucessfully emit event when the store is closed
       // Check closeStore() for failure when a random address try to close a store
       describe("closeStore()", async () => {
-        it("store owners should be able to close a store", async () => {
+        it("store owners should be able to close a store and update state accordingly", async () => {
           await instance.openStore(storeName, {from:storeOwner})
           await instance.closeStore(storeId, {from:storeOwner})
           const storeOpened = await instance.isStoreOpen(storeId, {from:random})
+	  const storeBalance = await instance.getBalance({from:storeOwner})
           assert.isFalse(storeOpened, "only store owner should be able to close a store")
+          assert.equal(storeBalance, 0, "store balance after store is closed shoud be 0")
         })
 
         it("should emit the appropriate event when a store is closed", async () => {
