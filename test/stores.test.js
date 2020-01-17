@@ -17,7 +17,7 @@ contract('Stores', function(accounts) {
     const itemQuantity = 3
     const storeId = 0
     const itemSku = 0
-    const testAmount = 3
+    const testAmount = 2
 
     let instance
 
@@ -150,6 +150,10 @@ contract('Stores', function(accounts) {
           })
        })
 
+       // Check buyItem() for success when a buyer is trying to buy an item
+       // Check buyItem() for sucessfully emit event when an item is bought
+       // Check buyItem() for failure when not enough value is sent when purchasing an item
+       // Check buyItem() for failure when the quantity asked for the item is more then the store available
        describe("buyItem()", async () => {
 
           it("should allow someone to purchase an item and update state accordingly", async () => {
@@ -175,12 +179,51 @@ contract('Stores', function(accounts) {
            catchRevert(instance.buyItem(storeId, itemSku, 3, {from:buyer, value:2}))
           })
 
-         it("should error if the quantity asked for the item is more than the availability", async () => {
+         it("should error if the quantity asked for the item is more than the store availability", async () => {
            await instance.openStore(storeOwner2, {from:storeOwner})
            await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
            catchRevert(instance.buyItem(storeId, itemSku, 5, {from:buyer, value:2}))
           })
+       })
 
+       // Check withdrawStoreBalance() for success when a store owner is trying to withdraw an amount from the store balance
+       // Check withdrawStoreBalance() for sucessfully emit event when an amount is withdrawn
+       // Check withdrawStoreBalance() for failure when a store owner try to withdraw an amount that is 0 or more than the store balance
+       // Check withdrawStoreBalance() for failure when a random address is trying to withdraw an amount from the store balance 
+       describe("withdrawStoreBalance()", async () => {
+
+          it("should allow store owner to withdraw some balance and update state accordingly", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           await instance.withdrawStoreBalance(testAmount, {from:storeOwner})
+           const balance = await instance.getBalance({from:storeOwner})
+           assert.equal(balance, 1, "the store balance available afther the store owner withdraw some amount should reduce to match the expected value")
+         })
+
+         it("should emit the appropriate event when an amount is withdrawn", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           const result = await instance.withdrawStoreBalance(testAmount, {from:storeOwner})
+           assert.equal(result.logs[0].event, "StoreBalanceWithdrawn", "StoreBalanceWithdrawn event not emitted, check withdrawStoreBalance method")
+          })
+
+         it("should error when 0 or more than balance amount is asked to be withdrawn", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           const balance = await instance.getBalance({from:storeOwner})
+           catchRevert(instance.withdrawStoreBalance(0, {from:storeOwner}))
+           catchRevert(instance.withdrawStoreBalance(balance+1, {from:storeOwner}))
+          })
+
+         it("random address should not be able to withdraw store balance", async () => {
+           await instance.openStore(storeOwner2, {from:storeOwner})
+           await instance.addItem(itemName, itemPrice, itemQuantity, storeId, {from:storeOwner})
+           await instance.buyItem(storeId, itemSku, 3, {from:buyer, value:5})
+           catchRevert(instance.withdrawStoreBalance(testAmount, {from:random}))
+         })
        })
     })
   })
