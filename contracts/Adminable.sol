@@ -1,9 +1,12 @@
 pragma solidity 0.5.16;
 
-/// @title Adminable
+/// @title Adminable, a contract to manage admins
 /// @author Nazzareno Massari
-/// @notice Set out the Admins states and modifiers
-/// @dev Admins are responsible for assigning and removing admin accounts;
+/// @notice You can use this contract to manage admins access in an Online Markeplace
+/// @dev The deploying address, owner, is assigned as admin
+/// @dev Admins are responsible for assigning and removing admin accounts
+/// @dev All function calls are currently implemented without side effecs through TDD approach
+/// @dev OpenZeppelin library is used for secure contract development
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 
@@ -33,7 +36,7 @@ contract Adminable is Ownable, Pausable {
   
   /// @notice check if the address is an Admin
   /// @param account address to check
-  /// @dev used in onlyAdmin() modifier
+  /// @dev used in onlyAdmin() modifier 
   function isAdmin(address account)
     public
     view
