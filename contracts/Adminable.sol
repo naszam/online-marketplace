@@ -12,6 +12,7 @@ import "@openzeppelin/contracts/lifecycle/Pausable.sol";
 
 contract Adminable is Ownable, Pausable {
 
+  /// State variable
   mapping (address => bool) private admins;
 
   /// Events
@@ -33,10 +34,10 @@ contract Adminable is Ownable, Pausable {
     require(isAdmin(msg.sender), "Caller is not an Admin");
     _;
   }
-  
+
   /// @notice check if the address is an Admin
   /// @param account address to check
-  /// @dev used in onlyAdmin() modifier 
+  /// @dev used in onlyAdmin() modifier
   function isAdmin(address account)
     public
     view
@@ -59,7 +60,7 @@ contract Adminable is Ownable, Pausable {
   }
 
   /// @notice remove an Admin
-  /// @param account admin address to remove 
+  /// @param account admin address to remove
   function removeAdmin(address account)
     public
     whenNotPaused()
