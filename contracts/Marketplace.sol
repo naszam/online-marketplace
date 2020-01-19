@@ -37,7 +37,7 @@ contract Marketplace is Adminable {
   }
 
   /// @notice Add a new Store Owner
-  /// @param StoreOwner address of the new Store Owner
+  /// @param storeOwner address of the new Store Owner
   /// @return True if the storeOwner address is added as Store Owner
   function addStoreOwner(address storeOwner)
     public
