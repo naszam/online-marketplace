@@ -23,10 +23,10 @@ contract Marketplace is Adminable {
       _;
   }
 
-  /// @notice check if the address is a Store Owner
-  /// @dev used in onlyStoreOwner() modifier
-  /// @param account address to check
-  /// @return true is the account address is a Store Owner
+  /// @notice Check if the address is a Store Owner
+  /// @dev Used in onlyStoreOwner() modifier
+  /// @param account Address to check
+  /// @return True is the account address is a Store Owner
   function isStoreOwner(address account)
     public
     view
@@ -36,9 +36,9 @@ contract Marketplace is Adminable {
     return storeOwners[account];
   }
 
-  /// @notice add a new Store Owner
-  /// @param storeOwner address of the new Store Owner
-  /// @return true if the storeOwner address is added as Store Owner
+  /// @notice Add a new Store Owner
+  /// @param StoreOwner address of the new Store Owner
+  /// @return True if the storeOwner address is added as Store Owner
   function addStoreOwner(address storeOwner)
     public
     whenNotPaused()
@@ -50,9 +50,9 @@ contract Marketplace is Adminable {
     return true;
   }
 
-  /// @notice remove a Store Owner
-  /// @param storeOwner store owner address to remove
-  /// @return true if the storeOwner address is removed as Store Owner
+  /// @notice Remove a Store Owner
+  /// @param storeOwner Store owner address to remove
+  /// @return True if the storeOwner address is removed as Store Owner
    function removeStoreOwner(address storeOwner)
     public
     whenNotPaused()
