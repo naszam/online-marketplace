@@ -1,16 +1,19 @@
 pragma solidity 0.5.16;
 
-/// @title Online Marketplace
+/// @title Stores, a contract to manage stores and items
 /// @author Nazzareno Massari
 /// @notice Store owners can use this contract to manage store's inventory and funds
-/// @dev All function calls are tested using Solidity Tests
+/// @dev All function calls are currently implemented without side effecs through TDD approach
+/// @dev OpenZeppelin library is used for secure contract development
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./Marketplace.sol";
 
 contract Stores is Marketplace {
 
+  /// Using OpenZeppelin SafeMath library to revert a transaction when an operation overflows
   using SafeMath for uint;
 
+  /// State variables
   uint private storeCount;
   uint private skuCount;
   mapping (uint => Store) private store;
@@ -56,6 +59,9 @@ contract Stores is Marketplace {
     require(success, "Transfer Failed");
   }
 
+  /// @notice Getter function for store balance
+  /// @dev Access restricted to only Store Owners
+  /// @return The store balance of the sender Store Owner
   function getBalance()
     public
     view
@@ -66,6 +72,10 @@ contract Stores is Marketplace {
     return balances[msg.sender];
   }
 
+  /// @notice Check if the store is open
+  /// @dev Used mainly for tests
+  /// @param storeId The store Id
+  /// @return True if the store is open
   function isStoreOpen(uint storeId)
     public
     view
@@ -75,6 +85,11 @@ contract Stores is Marketplace {
     return store[storeId].isOpen;
   }
 
+  /// @notice Fectch an Item
+  /// @dev Used mainly for tests
+  /// @param storeId The store Id
+  /// @param sku The sku of the item
+  /// @return The name, price, quantity, availability of the item
   function fetchItem(uint storeId, uint sku)
    public
    view
@@ -88,6 +103,10 @@ contract Stores is Marketplace {
      return (name, price, quantity, available);
    }
 
+  /// @notice Open a new store
+  /// @param _name The name of the new store
+  /// @dev Access restricted only to Store Owners
+  /// @return True if store is successfully opened
   function openStore(string memory _name)
     public
     onlyStoreOwner()
@@ -101,6 +120,10 @@ contract Stores is Marketplace {
     return true;
   }
 
+  /// @notice Close a store
+  /// @dev Access restricted only to Store Owners
+  /// @param storeId The store Id
+  /// @return True if the store is successfully closed
   function closeStore(uint storeId)
     public
     onlyStoreOwner()
@@ -114,6 +137,13 @@ contract Stores is Marketplace {
 	return true;
   }
 
+  /// @notice Add a new item
+  /// @dev Access restricted only to Store Owners
+  /// @param _name Name of the new item
+  /// @param _price Price of the new item
+  /// @param _quantity Quantity of the new item
+  /// @param _storeId The store Id to reference the store
+  /// @return True if the item is successfully added
   function addItem(string memory _name, uint _price, uint _quantity, uint _storeId)
     public
     onlyStoreOwner()
@@ -126,6 +156,11 @@ contract Stores is Marketplace {
 	return true;
   }
 
+  /// @notice Remove an item
+  /// @dev Access restricted only to Store Owners
+  /// @param storeId The store Id
+  /// @param sku The sku of the item
+  /// @return True if the item is successfully removed
   function removeItem(uint storeId, uint sku)
     public
     onlyStoreOwner()
@@ -139,6 +174,11 @@ contract Stores is Marketplace {
 	return true;
   }
 
+  /// @notice Buy an item
+  /// @param storeId The store Id
+  /// @param sku The item sku
+  /// @param quanitty The quantity for the selected item
+  /// @return True if the item is successfully bought
   function buyItem(uint storeId, uint sku, uint quantity)
     public
     payable
@@ -147,25 +187,29 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns(bool)
  {
-    require(item[storeId][sku].available);	 
+    require(item[storeId][sku].available);
     balances[store[storeId].owner] = balances[store[storeId].owner].add(msg.value);
     item[storeId][sku].quantity = item[storeId][sku].quantity.sub(quantity);
     emit ItemPurchased(storeId, sku);
     return true;
  }
 
-   function withdrawStoreBalance(uint withdrawAmount)
-     public
-     onlyStoreOwner()
-     whenNotPaused()
-     returns (uint)
-   {
-     require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
-     balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
-     (bool success, ) = msg.sender.call.value(withdrawAmount)("");
-     require(success, "Transfer failed.");
-     emit StoreBalanceWithdrawn(msg.sender, withdrawAmount, balances[msg.sender]);
-     return balances[msg.sender];
-   }
+  /// @notice Withdraw an amount from the store balance
+  /// @dev Access restricted to Store Owners
+  /// @param withdrawAmount Amount to withdraw
+  /// @return The updated store balance
+  function withdrawStoreBalance(uint withdrawAmount)
+    public
+    onlyStoreOwner()
+    whenNotPaused()
+    returns (uint)
+ {
+    require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
+    balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
+    (bool success, ) = msg.sender.call.value(withdrawAmount)("");
+    require(success, "Transfer failed.");
+    emit StoreBalanceWithdrawn(msg.sender, withdrawAmount, balances[msg.sender]);
+    return balances[msg.sender];
+  }
 
 }
