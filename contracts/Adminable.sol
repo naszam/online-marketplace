@@ -36,8 +36,9 @@ contract Adminable is Ownable, Pausable {
   }
 
   /// @notice check if the address is an Admin
-  /// @param account address to check
   /// @dev used in onlyAdmin() modifier
+  /// @param account address to check
+  /// @return true if the account is an Admin
   function isAdmin(address account)
     public
     view
@@ -48,6 +49,7 @@ contract Adminable is Ownable, Pausable {
 
   /// @notice add a new Admin
   /// @param account address of the new Admin
+  /// @return true if the account address is added as Admin
   function addAdmin(address account)
     public
     whenNotPaused()
@@ -61,6 +63,7 @@ contract Adminable is Ownable, Pausable {
 
   /// @notice remove an Admin
   /// @param account admin address to remove
+  /// @return true if the account address if removed as Admin
   function removeAdmin(address account)
     public
     whenNotPaused()
