@@ -1,15 +1,16 @@
 pragma solidity 0.5.16;
 
-/// @title Online Marketplace
+/// @title Marketplace, a contract to manage store owners
 /// @author Nazzareno Massari
 /// @notice Admins of the Marketplace can use this contract to manage store owners to add stores to the Marketplace
-/// @dev all function calls are tested using Solidity Tests
-
+/// @dev Admins are responsible for assigning and removing store owners
+/// @dev All function calls are currently implemented without side effecs through TDD approach
+/// @dev OpenZeppelin library is used for secure contract development
 import "./Adminable.sol";
 
 contract Marketplace is Adminable {
 
-
+  /// State variable
   mapping (address => bool) private storeOwners;
 
   /// Events
@@ -22,6 +23,9 @@ contract Marketplace is Adminable {
       _;
   }
 
+  /// @notice check if the address is a Store Owner
+  /// @param account address to check
+  /// @dev used in onlyStoreOwner() modifier
   function isStoreOwner(address account)
     public
     view
@@ -31,6 +35,8 @@ contract Marketplace is Adminable {
     return storeOwners[account];
   }
 
+  /// @notice add a new Store Owner
+  /// @param storeOwner address of the new Store Owner
   function addStoreOwner(address storeOwner)
     public
     whenNotPaused()
@@ -42,7 +48,8 @@ contract Marketplace is Adminable {
     return true;
   }
 
-
+  /// @notice remove a Store Owner
+  /// @param storeOwner store owner address to remove
    function removeStoreOwner(address storeOwner)
     public
     whenNotPaused()
