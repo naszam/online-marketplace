@@ -177,7 +177,7 @@ contract Stores is Marketplace {
   /// @notice Buy an item
   /// @param storeId The store Id
   /// @param sku The item sku
-  /// @param quanitty The quantity for the selected item
+  /// @param quantity The quantity for the selected item
   /// @return True if the item is successfully bought
   function buyItem(uint storeId, uint sku, uint quantity)
     public
