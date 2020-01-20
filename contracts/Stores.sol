@@ -45,7 +45,9 @@ contract Stores is Marketplace {
 
   /// Modifiers
   modifier paidEnough(uint _storeId, uint _sku, uint _quantity) {
-    require(_quantity > 0 && item[_storeId][_sku].quantity >= _quantity && msg.value >= (item[_storeId][_sku].price.mul(_quantity)));
+    require(_quantity > 0, "Error: 0 quantity specified!");
+    require(item[_storeId][_sku].quantity >= _quantity, "Error: quantity not available");
+    require(msg.value >= item[_storeId][_sku].price.mul(_quantity), "Insufficient funds");
     _;
   }
 
@@ -204,7 +206,8 @@ contract Stores is Marketplace {
     whenNotPaused()
     returns (uint)
  {
-    require(balances[msg.sender] >= withdrawAmount && withdrawAmount != 0);
+    require(withdrawAmount != 0, "Error: 0 amount specified!");
+    require(balances[msg.sender] >= withdrawAmount, "Error: specified amount not available to withdraw");
     balances[msg.sender] = balances[msg.sender].sub(withdrawAmount);
     (bool success, ) = msg.sender.call.value(withdrawAmount)("");
     require(success, "Transfer failed.");
