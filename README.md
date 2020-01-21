@@ -82,17 +82,17 @@ Clone this GitHub repository.
   - Import Ganache GUI mnemonic into MetaMask.
   - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
   - Migrate the project to Ganache GUI:
-  ```
-  $ truffle migrate
-  ```
+    ```
+    $ truffle migrate
+    ```
   - Move to client directory on the project:
-  ```
-  $ cd client
-  ```
+    ```
+    $ cd client
+    ```
   - Install dependencies:
-  ```
-  $ npm install
-  ```
+    ```
+    $ npm install
+    ```
   - Start the Local Web Server:
     ```sh
     $ npm run start
