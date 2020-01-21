@@ -38,15 +38,15 @@ Clone this GitHub repository.
      ```sh
      $ truffle compile
      ```
-   - Deploy the smart contract using Truffle & Ganache with the following command:
+   - Deploy the smart contracts using Truffle & Ganache with the following command:
      ```sh
      $ truffle migrate
      ```
-   - Test the smart contract using Truffle & Ganache with the following command:
+   - Test the smart contracts using Truffle & Ganache with the following command:
      ```sh
      $ truffle test
      ```
-   - Analyzing the smart contract using MythX for Truffle with the following command (optional):
+   - Analyze the smart contracts using MythX for Truffle with the following command (optional):
      ```sh
      $ truffle run verify
      ```
@@ -81,7 +81,7 @@ Clone this GitHub repository.
   - Change Ganache GUI port to 8545.
   - Import Ganache GUI mnemonic into MetaMask.
   - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
-  - Deploy the project to Ganache GUI:
+  - Deploy the smart contracts to Ganache GUI:
     ```
     $ truffle migrate
     ```
