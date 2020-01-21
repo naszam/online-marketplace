@@ -59,18 +59,18 @@ Clone this GitHub repository.
   - Create new project.
   - Copy the rinkeby URL into truffle-config.js.
   - Uncomment the following lines in truffle-config.js:
-  ```
-  // const HDWalletProvider = require("@truffle/hdwallet-provider");
-  // const infuraKey = '...';
-  // const infuraURL = 'https://rinkeby.infura.io/...';
+    ```
+    // const HDWalletProvider = require("@truffle/hdwallet-provider");
+    // const infuraKey = '...';
+    // const infuraURL = 'https://rinkeby.infura.io/...';
 
-  // const fs = require('fs');
-  // const mnemonic = fs.readFileSync(".secret").toString().trim();
-  ```
+    // const fs = require('fs');
+    // const mnemonic = fs.readFileSync(".secret").toString().trim();
+    ```
   - install the optional global dependency, Truffle HD Wallet Provider:
-  ```sh
-  $ npm install -g @truffle/hdwallet-provider
-  ```
+    ```sh
+    $ npm install -g @truffle/hdwallet-provider
+    ```
   - Deploy the smart contract using Truffle & Infura with the following command:
     ```sh
     $ truffle migrate --network rinkeby
