@@ -12,7 +12,7 @@ Also used inside modifiers and opted for multiple requires instead of a single o
 
 ## Restricting Access
 
-State variables are set using the keyword **private** to restrict access to other contracts and prevent them to access and modify the information.
+State variable visibility is set using the keyword **private** to restrict access to other contracts and prevent them to access and modify the information [[SWC-108](https://swcregistry.io/docs/SWC-108)]. 
 
 Also used the modifiers **onlyAdmin()** and **onlyStoreOwner()** to restrict function access only to Admins or Store Owners.  
 Admins can add/remove other admins and add/remove Store Owners.  
