@@ -1,8 +1,15 @@
 # Avoiding Common Attacks
 
+The project has been checked using MythX for Truffle (partial verification).
+```
+$ truffle run verify
+```
+
 ## Floating Pragma [[SWC-103](https://swcregistry.io/docs/SWC-103)]
 
 Prevented specifing the solc version in my truffle project set to 0.5.16. 
+
+Found using MythX.
 
 ## Integer Overflow and Underflow [[SWC-101](https://swcregistry.io/docs/SWC-101)]
 
