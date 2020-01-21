@@ -67,7 +67,7 @@ Clone this GitHub repository.
   // const fs = require('fs');
   // const mnemonic = fs.readFileSync(".secret").toString().trim();
   ```
-  - install the optional global dependencie, Truffle HD Wallet Provider:
+  - install the optional global dependency, Truffle HD Wallet Provider:
   ```sh
   $ npm install -g @truffle/hdwallet-provider
   ```
@@ -77,8 +77,24 @@ Clone this GitHub repository.
     ```
 
 ## Using the DApp
-
+  - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
+  - Change Ganache GUI port to 8545.
+  - Import Ganache GUI mnemonic into MetaMask.
+  - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
+  - Migrate the project to Ganache GUI:
+  ```
+  $ truffle migrate
+  ```
+  - Move to client directory on the project:
+  ```
+  $ cd client
+  ```
+  - Install dependencies:
+  ```
+  $ npm install
+  ```
   - Start the Local Web Server:
     ```sh
     $ npm run start
     ```
+  
