@@ -27,7 +27,7 @@ Inlcuded to explain why I haven't used it.
 
 First, is not available inside the OpenZeppelin library anymore.
 
-After some research, like the [issue #25](https://github.com/OpenZeppelin/openzeppelin-contracts-ethereum-package/issues/25) on OpenZeppelin GitHub and the considerations on [StackExchange](https://ethereum.stackexchange.com/questions/59780/is-selfdestruct-a-good-practice), I've decided not to implement the Mortal pattern into my project to avoid potential attacks [[SWC-106](https://swcregistry.io/docs/SWC-106)] and I've used the Circuit Breaker pattern instead.
+After some research, like the [issue #25](https://github.com/OpenZeppelin/openzeppelin-contracts-ethereum-package/issues/25) on OpenZeppelin GitHub and the considerations on [StackExchange](https://ethereum.stackexchange.com/questions/59780/is-selfdestruct-a-good-practice), I've decided not to implement the Mortal pattern into my project to avoid also potential attacks [[SWC-106](https://swcregistry.io/docs/SWC-106)] and I've used the Circuit Breaker pattern instead to disable the contract functions.
 
 ## Pull over Push Payments (also known as the Withdrawal Pattern)
 
