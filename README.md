@@ -81,7 +81,7 @@ Clone this GitHub repository.
   - Change Ganache GUI port to 8545.
   - Import Ganache GUI mnemonic into MetaMask.
   - Connect MetaMask to Ganache GUI, adding a custom RPC specifing the Ganache GUI's RPC server URL.
-  - Migrate the project to Ganache GUI:
+  - Deploy the project to Ganache GUI:
     ```
     $ truffle migrate
     ```
