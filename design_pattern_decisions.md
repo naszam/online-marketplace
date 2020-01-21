@@ -2,7 +2,7 @@
 
 The following Design Patterns have been implemented into the project.
 
-## Fail early and fail loud
+## Fail Early and Fail Loud
 
 Implemented using **require()** to check for conditions required for execution at the beginning of the function body to throw an exeption if the condition is not met.  
 
