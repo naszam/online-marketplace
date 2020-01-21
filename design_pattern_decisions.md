@@ -4,7 +4,7 @@ The following Design Pattern have been implemented into the project.
 
 ## Fail early and fail loud
 
-Implemented using require() to check for conditions required for execution at the beginning of the function body to throw an exeption if the condition is not met.  
+Implemented using **require()** to check for conditions required for execution at the beginning of the function body to throw an exeption if the condition is not met.  
 
 This allow to reduce unnecessary code execution in the event that an exception will be thown.
 
@@ -12,9 +12,9 @@ Also used inside modifiers and opted for multiple requires instead of a single o
 
 ## Restricting Access
 
-State variables are set using the keyword "private" to restrict access to other contracts and prevent them to access and modify the information.
+State variables are set using the keyword **private** to restrict access to other contracts and prevent them to access and modify the information.
 
-Also used modifiers like onlyAdmin() and onlyStoreOwner() to restrict function access only to Admins or Store Owners.  
+Also used the modifiers **onlyAdmin()** and **onlyStoreOwner()** to restrict function access only to Admins or Store Owners.  
 
 Admins can add/remove other admins and add/remove Store Owners.  
 
