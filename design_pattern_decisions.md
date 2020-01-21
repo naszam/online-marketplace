@@ -14,9 +14,9 @@ Also used inside modifiers and opted for multiple requires instead of a single o
 
 State variables are set using the keyword "private" to restrict access to other contracts and prevent them to access and modify the information.
 
-Also used modifiers like onlyAdmin() and onlyStoreOwners() to restrict function access only to Admins or Store Owners.  
+Also used modifiers like onlyAdmin() and onlyStoreOwner() to restrict function access only to Admins or Store Owners.  
 
-Admins can add and remove other admins and add and remove Store Owners.  
+Admins can add/remove other admins and add/remove Store Owners.  
 
 Store Owners can open/close a store, add/remove an item and withdraw an amount from the store balance.
 
