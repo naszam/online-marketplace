@@ -1,6 +1,6 @@
 # Design Pattern Deicisions
 
-The following Design Pattern have been implemented into the project.
+The following Design Patterns have been implemented into the project.
 
 ## Fail early and fail loud
 
