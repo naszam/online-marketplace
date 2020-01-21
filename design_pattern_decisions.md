@@ -31,8 +31,20 @@ After some research, like the [issue #25](https://github.com/OpenZeppelin/openze
 
 ## Pull over Push Payments (also known as the Withdrawal Pattern)
 
+Implemented to withdraw the store balance using the function **withdrawStoreBalance()**, allowing store owners to withdraw a specific amount from their store balance. 
+
+Also used the Checks-Effects-Interactions pattern inside the function as suggested by the [ConsenSys Diligence](https://diligence.consensys.net/blog/2019/09/stop-using-soliditys-transfer-now/), to prevent Reentrancy Attack, making sure all the interactions (external calls) happens at the end of the function body.
+
+Inside the function body and inside other functions have been used **.call.value()** instead of **transfer()**, with a Fail Early Fail Loud pattern to check for success, following the [[EPI-1884](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1884.md)] introduced with the recent Istanbul hard fork.
+
+Also implemented to prevent Denial of Service Attacks (DOS).
+
 ## Checks-Effects-Interactions 
+
+Implemented in the **withdrawStoreBalance()** and other functions, making sure all the interactions happens at the end of the function body, to prevent Reentrancy Attacks.
 
 ## Circuit Breaker
 
+Implemented inheriting **Pausable.sol** included inside the OpenZeppelin Library.
 
+The provided modifier, **whenNotPaused()** has been used in all the functions to be able to disable all the functions by calling the **pause()** function when needed.
