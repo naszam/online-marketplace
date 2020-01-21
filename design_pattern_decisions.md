@@ -6,7 +6,7 @@ The following Design Pattern have been implemented into the project.
 
 Implemented using **require()** to check for conditions required for execution at the beginning of the function body to throw an exeption if the condition is not met.  
 
-This allow to reduce unnecessary code execution in the event that an exception will be thown.
+This allow to reduce unnecessary code execution in the event that an exception would be thown.
 
 Also used inside modifiers and opted for multiple requires instead of a single one with boolean logic (&&) to improve readibility.
 
