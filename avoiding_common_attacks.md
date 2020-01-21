@@ -12,6 +12,6 @@ Prevented inheriting SafeMath.sol from OpenZeppelin Library.
 
 Prevented implementing the Withdrawal and Checks-Effects-Interactions.
 
-## Denial of Service Attacks (DOS)
+## Denial of Service Attacks (DOS) [[SWC-113](https://swcregistry.io/docs/SWC-113)][[SWC-128](https://swcregistry.io/docs/SWC-128)]
 
 Prevented implementing the Withdrawal pattern.
