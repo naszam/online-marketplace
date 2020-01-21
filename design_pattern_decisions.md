@@ -15,12 +15,19 @@ Also used inside modifiers and opted for multiple requires instead of a single o
 State variables are set using the keyword **private** to restrict access to other contracts and prevent them to access and modify the information.
 
 Also used the modifiers **onlyAdmin()** and **onlyStoreOwner()** to restrict function access only to Admins or Store Owners.  
-
 Admins can add/remove other admins and add/remove Store Owners.  
 
 Store Owners can open/close a store, add/remove an item and withdraw an amount from the store balance.
 
 ## Mortal
+
+Not implemented.  
+
+Inlcuded to explain why I haven't used it.
+
+First, is not available inside the OpenZeppelin library anymore.
+
+After some research, like the [issue #25](https://github.com/OpenZeppelin/openzeppelin-contracts-ethereum-package/issues/25) on OpenZeppelin GitHub and on [StackExchange](https://ethereum.stackexchange.com/questions/59780/is-selfdestruct-a-good-practice), I've decided not to implement the Mortal pattern into my project and I've used the Circuit Breaker pattern instead.
 
 ## Pull over Push Payments (also known as the Withdrawal Pattern)
 
