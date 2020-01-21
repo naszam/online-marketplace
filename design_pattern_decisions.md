@@ -47,4 +47,6 @@ Implemented in the **withdrawStoreBalance()** and other functions, making sure a
 
 Implemented inheriting **Pausable.sol** from the OpenZeppelin Library.
 
-The provided modifier, **whenNotPaused()** has been used in all the functions in order to disable all the functions by calling the **pause()** function when needed.
+The provided modifier, **whenNotPaused()** has been used in all the functions in order to freeze all the functions by calling the **pause()** functions in case of a bug has been found.
+
+Only the Pauser is able to call the pause() function, and when the contract is deployed owner is added as Pauser.
