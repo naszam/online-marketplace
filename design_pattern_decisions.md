@@ -45,6 +45,6 @@ Implemented in the **withdrawStoreBalance()** and other functions, making sure a
 
 ## Circuit Breaker
 
-Implemented inheriting **Pausable.sol** included inside the OpenZeppelin Library.
+Implemented inheriting **Pausable.sol** from the OpenZeppelin Library.
 
 The provided modifier, **whenNotPaused()** has been used in all the functions in order to disable all the functions by calling the **pause()** function when needed.
