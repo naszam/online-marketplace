@@ -2,6 +2,8 @@
 
 ## Floating Pragma
 
+## Integer Overflow and Underflow
+
 ## Reentrancy Attack
 
-## Integer Overflow and Underflow
+## Denial of Service Attacks (DOS)
