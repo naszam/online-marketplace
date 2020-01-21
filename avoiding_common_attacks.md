@@ -7,7 +7,7 @@ $ truffle run verify
 
 ## Floating Pragma [[SWC-103](https://swcregistry.io/docs/SWC-103)]
 
-Prevented specifing the solc version in my truffle project set to 0.5.16. 
+Prevented specifing the solc version in my truffle project set to 0.5.16, selected considering the bug fix.
 
 Found using MythX.
 
