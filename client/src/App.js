@@ -199,7 +199,7 @@ class App extends Component {
     return (
       <div className="App">
       <a href={this.state.etherscanLink} target="_blank" rel="noopener noreferrer">Last Transaction Details</a>
-      <Heading as={"h4"}> Current Eth Address: {this.state.accounts} </Heading>
+      <Heading as={"h4"}> Current Ethereum Address: {this.state.accounts} </Heading>
       <Heading as={"h1"}> Online Marketplace </Heading>
       <Flex>
       <Box p={3} width={1 / 2}>
