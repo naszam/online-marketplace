@@ -22,3 +22,7 @@ Prevented implementing the Withdrawal and Checks-Effects-Interactions Patterns.
 ## Denial of Service Attacks (DOS) [[SWC-113](https://swcregistry.io/docs/SWC-113)][[SWC-128](https://swcregistry.io/docs/SWC-128)]
 
 Prevented implementing the Withdrawal Pattern.
+
+## Unprotected SELFDESTRUCT Instruction [[SWC-106](https://swcregistry.io/docs/SWC-106)]
+
+Prevented avoiding to implement the Mortal Pattern, also not present in the OpenZeppelin Library anymore.
