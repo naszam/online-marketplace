@@ -35,7 +35,7 @@ Implemented to withdraw the store balance using the function **withdrawStoreBala
 
 Also used the Checks-Effects-Interactions pattern inside the function as suggested by the [ConsenSys Diligence](https://diligence.consensys.net/blog/2019/09/stop-using-soliditys-transfer-now/), to prevent Reentrancy Attack, making sure all the interactions (external calls) happens at the end of the function body.
 
-Inside the function body and inside other functions have been used **.call.value()** instead of **transfer()**, with a Fail Early Fail Loud pattern to check for success, following the [[EPI-1884](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1884.md)] introduced with the recent Istanbul hard fork.
+Inside the function body and inside other functions it has been used **.call.value()** instead of **transfer()**, with a Fail Early Fail Loud pattern to check for success, following the [[EPI-1884](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1884.md)] introduced with the recent Istanbul hard fork.
 
 Also implemented to prevent Denial of Service Attacks (DOS).
 
