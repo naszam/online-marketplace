@@ -67,7 +67,7 @@ Clone this GitHub repository.
     // const fs = require('fs');
     // const mnemonic = fs.readFileSync(".secret").toString().trim();
     ```
-  - install the optional global dependency, Truffle HD Wallet Provider:
+  - install the global dependency, Truffle HD Wallet Provider:
     ```sh
     $ npm install -g @truffle/hdwallet-provider
     ```
