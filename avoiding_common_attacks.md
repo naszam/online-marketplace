@@ -25,4 +25,4 @@ Prevented implementing the Withdrawal Pattern.
 
 ## Unprotected SELFDESTRUCT Instruction [[SWC-106](https://swcregistry.io/docs/SWC-106)]
 
-Prevented avoiding to implement the Mortal Pattern, also not present in the OpenZeppelin Library anymore.
+Prevented avoiding to implement the Mortal Pattern, also not present in the [OpenZeppelin Library](https://github.com/OpenZeppelin/openzeppelin-contracts) anymore.
