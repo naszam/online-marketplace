@@ -59,16 +59,6 @@ class App extends Component {
         Stores.abi,
         deployedNetwork && deployedNetwork.address,
       );
-/*
-      instance.events.AdminAdded((error, event)=>{
-        console.log(event)
-      })
-
-      instance.events.StoreOwnerAdded((error, event) =>{
-        console.log(event)
-      })
-*/
-
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
