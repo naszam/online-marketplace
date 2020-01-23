@@ -117,7 +117,7 @@ contract Stores is Marketplace {
   {
     store[storeCount] = Store({id: storeCount, name: _name, owner: msg.sender, isOpen:true});
     balances[msg.sender] = 0;
-    emit StoreOpened(storeCount, _name);
+    emit StoreOpened(storeCount, store[storeCount].name);
     storeCount = storeCount.add(1);
     return true;
   }
