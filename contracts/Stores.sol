@@ -36,9 +36,9 @@ contract Stores is Marketplace {
   }
 
   /// Events
-  event StoreOpened(uint storeId);
+  event StoreOpened(uint storeId, string storeName);
   event StoreBalanceWithdrawn(address storeOwner, uint withdrawAmount, uint newBalance);
-  event StoreClosed(uint storeId);
+  event StoreClosed(uint storeId, string storeName);
   event ItemAdded(uint sku, uint storeId);
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
@@ -117,7 +117,7 @@ contract Stores is Marketplace {
   {
     store[storeCount] = Store({id: storeCount, name: _name, owner: msg.sender, isOpen:true});
     balances[msg.sender] = 0;
-    emit StoreOpened(storeCount);
+    emit StoreOpened(storeCount, _name);
     storeCount = storeCount.add(1);
     return true;
   }
@@ -135,7 +135,7 @@ contract Stores is Marketplace {
 	store[storeId].isOpen = false;
 	(bool success, ) = store[storeId].owner.call.value(balances[store[storeId].owner])("");
   require(success, "Transfer failed.");
-	emit StoreClosed(storeId);
+	emit StoreClosed(storeId, store[storeId].name);
 	return true;
   }
 
