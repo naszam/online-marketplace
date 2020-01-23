@@ -4,7 +4,9 @@ import getWeb3 from "./getWeb3";
 
 import "./App.css";
 
-import { Button, Box, Flex, Form, Input, Heading, Field, Table, EthAddress } from 'rimble-ui';
+import { Button, Card, Box, Flex, Form, Input, Heading, Field, Table, EthAddress } from 'rimble-ui';
+
+import NetworkIndicator from "@rimble/network-indicator";
 
 const etherscanBaseUrl = "https://rinkeby.etherscan.io"
 
@@ -22,8 +24,16 @@ class App extends Component {
       ownerAddressToAdd: undefined,
       ownerAddressToRemove: undefined,
       storeName: undefined,
+      storeId: undefined,
+      storeBalance: [],
       admins:[],
-      storeOwners:[]
+      storeOwners:[],
+      itemId: undefined,
+      itemName: undefined,
+      itemPrice: undefined,
+      itemQuantity: undefined,
+      itemStoreId: undefined,
+      itemAvailability: undefined
     }
 
     this.handleAddAdmin = this.handleAddAdmin.bind(this)
@@ -63,6 +73,10 @@ class App extends Component {
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
       this.setState({ web3: web3, accounts: accounts[0], storesInstance: instance });
+      this.listenAdminAddedEvent()
+      this.listenAdminRemovedEvent()
+      this.listenStoreOwnerAddedEvent()
+      this.listenStoreOwnerRemovedEvent()
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -72,19 +86,79 @@ class App extends Component {
     }
   };
 
+  listenAdminAddedEvent=() => {
+
+    this.state.storesInstance.events.AdminAdded({fromBlock: 0})
+    .on('data', async (event) => {
+
+      var newAdminsArray = this.state.admins
+
+      if (!newAdminsArray.includes(event.returnValues.admin)){
+      newAdminsArray.push(event.returnValues.admin)
+      this.setState({ admins: newAdminsArray })
+      }
+
+    })
+    .on('error', console.error);
+  }
+
+  listenAdminRemovedEvent=() => {
+
+    this.state.storesInstance.events.AdminRemoved({fromBlock: 0})
+    .on('data', async (event) => {
+
+      var newAdminsArray = this.state.admins
+
+      if (newAdminsArray.includes(event.returnValues.admin)){
+      var index=newAdminsArray.indexOf(event.returnValues.admin)
+      newAdminsArray.splice(index, 1)
+      this.setState({ admins: newAdminsArray })
+      }
+
+    })
+    .on('error', console.error);
+  }
+
+  listenStoreOwnerAddedEvent=() => {
+
+    this.state.storesInstance.events.StoreOwnerAdded({fromBlock: 0})
+    .on('data', async (event) => {
+
+      var newStoreOwnersArray = this.state.storeOwners
+
+      if (!newStoreOwnersArray.includes(event.returnValues.storeOwner)){
+      newStoreOwnersArray.push(event.returnValues.storeOwner)
+      this.setState({ storeOwners: newStoreOwnersArray })
+      }
+
+    })
+    .on('error', console.error);
+  }
+
+  listenStoreOwnerRemovedEvent=() => {
+
+    this.state.storesInstance.events.StoreOwnerRemoved({fromBlock: 0})
+    .on('data', async (event) => {
+
+      var newStoreOwnersArray = this.state.storeOwners
+
+      if (newStoreOwnersArray.includes(event.returnValues.storeOwner)){
+      var index=newStoreOwnersArray.indexOf(event.returnValues.storeOwner)
+      newStoreOwnersArray.splice(index, 1)
+      this.setState({ storeOwners: newStoreOwnersArray })
+      }
+
+    })
+    .on('error', console.error);
+  }
+
+
   handleAddAdmin = async (event) => {
     if (typeof this.state.storesInstance !== 'undefined') {
       event.preventDefault()
     // Get the value from the contract to prove it worked.
     let result = await this.state.storesInstance.methods.addAdmin(this.state.adminAddressToAdd).send({from: this.state.accounts});
     //const response = await this.state.storesInstance.methods.isAdmin(this.state.adminAddressToAdd).call();
-
-    var newAdminsArray = this.state.admins.slice()
-    newAdminsArray.push(this.state.adminAddressToAdd)
-    this.setState({ admins: newAdminsArray })
-    //this.setState({admins: this.state.adminAddressToAdd});
-    //this.setState({admin_success: response})
-    //this.setState({admin_success: result});
 
     // Update state with the result.
     this.setLastTransactionDetails(result)
@@ -134,11 +208,11 @@ class App extends Component {
     let result = await this.state.storesInstance.methods.openStore(this.state.storeName).send({from: this.state.accounts});
     // Update state with the result.
 
-    //const response = await this.state.storesInstance.methods.isStoreOpen(0).call();
+    const response = await this.state.storesInstance.methods.getBalance().call();
 
     //const balance_eth = this.state.web3.fromWei(balance_wei, 'ether')
     // Update state with the result.
-    //this.setState({ balance: response });
+    this.setState({ storeBalance: response });
 
     this.setLastTransactionDetails(result)
     }
@@ -149,6 +223,26 @@ class App extends Component {
       event.preventDefault()
     // Get the value from the contract to prove it worked.
     let result = await this.state.storesInstance.methods.closeStore(this.state.storeId).send({from: this.state.accounts});
+
+    this.setLastTransactionDetails(result)
+    }
+  };
+
+  handleAddItem = async (event) => {
+    if (typeof this.state.storesInstance !== 'undefined') {
+      event.preventDefault()
+      // Get the value from the contract to prove it worked.
+    let result = await this.state.storesInstance.methods.addItem(this.state.itemName, this.web3.utils.toWei(this.state.itemPrice), this.state.itemQuantity, this.state.itemStoreId).send({from: this.state.accounts});
+
+    this.setLastTransactionDetails(result)
+    }
+  };
+
+  handleRemoveItem = async (event) => {
+    if (typeof this.state.storesInstance !== 'undefined') {
+      event.preventDefault()
+    // Get the value from the contract to prove it worked.
+    let result = await this.state.storesInstance.methods.removeItem(this.state.itemStoreId, this.state.itemId).send({from: this.state.accounts});
 
     this.setLastTransactionDetails(result)
     }
@@ -175,6 +269,24 @@ class App extends Component {
         case "closeStore":
             this.setState({storeId: event.target.value})
             break;
+        case "itemName":
+            this.setState({itemName: event.target.value})
+            break;
+        case "itemPrice":
+            this.setState({itemPrice: event.target.value})
+            break;
+        case "itemQuantity":
+            this.setState({itemQuantity: event.target.value})
+              break;
+        case "itemStoreId":
+            this.setState({itemStoreId: event.target.value})
+              break;
+        case "itemStoreId2remove":
+            this.setState({itemStoreId: event.target.value})
+            break;
+        case "itemId":
+            this.setState({itemId: event.target.value})
+            break;
         default:
             break;
       }
@@ -199,6 +311,12 @@ class App extends Component {
     return (
       <div className="App">
       <a href={this.state.etherscanLink} target="_blank" rel="noopener noreferrer">Last Transaction Details</a>
+      <Card maxWidth={'320px'} mx={'auto'} p={3} px={4}>
+        <NetworkIndicator
+          currentNetwork={this.state.networkId}
+          requiredNetwork={4}
+        />
+      </Card>
       <Heading as={"h4"}> Current Ethereum Address: {this.state.accounts} </Heading>
       <Heading as={"h1"}> Online Marketplace </Heading>
       <Flex>
@@ -231,12 +349,11 @@ class App extends Component {
         </tr>
       </thead>
       <tbody>
-      <tr>
-        <td><EthAddress address={this.state.admins[0]} /></td>
-      </tr>
-      <tr>
-        <td><EthAddress address={this.state.admins[1]} /></td>
-      </tr>
+      {this.state.admins.map(adminAddress => (
+        <tr>
+            <td><EthAddress address={adminAddress}/></td>
+        </tr>
+      ))}
       </tbody>
       </Table>
       </Box>
@@ -271,18 +388,17 @@ class App extends Component {
         </tr>
       </thead>
       <tbody>
-      <tr>
-        <td><EthAddress address={this.state.storeOwners[0]} /></td>
-      </tr>
-      <tr>
-        <td><EthAddress address={this.state.storeOwners[1]} /></td>
-      </tr>
+      {this.state.storeOwners.map(storeOwnerAddress => (
+        <tr>
+            <td><EthAddress address={storeOwnerAddress}/></td>
+        </tr>
+      ))}
       </tbody>
       </Table>
       </Box>
       </Flex>
       <Flex>
-      <Box>
+      <Box p={3} width={1 / 2}>
       <Heading> Manage a Store </Heading>
       <Form>
       <Box>
@@ -316,8 +432,154 @@ class App extends Component {
       <Button value="Submit" onClick={this.handleCloseStore} >Close Store </Button>
       </Box>
       </Form>
+      <Form>
+      <Box>
+      <Field label="Amount to withdraw:">
+        <Input
+        type="text"
+        placeholder="e.g. 3 eth"
+        name="withdrawStoreBalance"
+        value={this.state.withdrawAmount}
+        onChange={this.handleChange} />
+      </Field>
+      </Box>
+      <Box>
+        <Button value="Submit" onClick={this.handleWithdrawStoreBalance} >Withdraw Store Balance </Button>
+      </Box>
+      </Form>
+      </Box>
+      <Box p={3} width={1 / 2}>
+      <Table>
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Store Name</th>
+        <th>Store Balance</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{this.state.storeId}</td>
+        <td>{this.state.storeName}</td>
+        <td>{this.state.storeBalance}</td>
+      </tr>
+      <tr>
+        <td>{this.state.storeId}</td>
+        <td>{this.state.storeName}</td>
+        <td>{this.state.storeBalance}</td>
+      </tr>
+      </tbody>
+      </Table>
       </Box>
       </Flex>
+
+      <Flex>
+      <Box p={3} width={1 / 2}>
+      <Heading> Store's Inventory </Heading>
+      <Form>
+      <Box>
+      <Field label="Item Name">
+        <Input
+        type="text"
+        placeholder="e.g. Coffee"
+        required="true"
+        name="itemName"
+        value={this.state.itemName}
+        onChange={this.handleChange} />
+      </Field>
+      <Field label="Item Price">
+        <Input
+        type="text"
+        placeholder="e.g. 1 eth"
+        required="true"
+        name="itemPrice"
+        value={this.state.itemPrice}
+        onChange={this.handleChange} />
+      </Field>
+      <Field label="Item Quantity">
+        <Input
+        type="text"
+        placeholder="e.g. 10"
+        required="true"
+        name="itemQuantity"
+        value={this.state.itemQuantity}
+        onChange={this.handleChange} />
+      </Field>
+      <Field label="Store Id">
+        <Input
+        type="text"
+        placeholder="e.g. 0"
+        required="true"
+        name="itemStoreId"
+        value={this.state.itemStoreId}
+        onChange={this.handleChange} />
+      </Field>
+      </Box>
+      <Box>
+      <Button value="Submit" onClick={this.handleAddItem} >Add Item </Button>
+      </Box>
+      </Form>
+      <Form>
+      <Box>
+      <Field label="Store Id:">
+        <Input
+        type="text"
+        placeholder="e.g. 0"
+        required="true"
+        name="itemStoreId2remove"
+        value={this.state.itemStoreId}
+        onChange={this.handleChange} />
+      </Field>
+      <Field label="Item Id:">
+        <Input
+        type="text"
+        placeholder="e.g. 0"
+        required="true"
+        name="itemId"
+        value={this.state.itemId}
+        onChange={this.handleChange} />
+      </Field>
+      </Box>
+      <Box>
+      <Button value="Submit" onClick={this.handleRemoveItem} >Remove Item</Button>
+      </Box>
+      </Form>
+      </Box>
+      <Box p={3} width={1 / 2}>
+      <Table>
+      <thead>
+      <tr>
+        <th>Item Id</th>
+        <th>Item Name</th>
+        <th>Item Price</th>
+        <th>Item Quantity</th>
+        <th>Store Id </th>
+        <th>Available</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{this.state.itemId}</td>
+        <td>{this.state.itemName}</td>
+        <td>{this.state.itemPrice}</td>
+        <td>{this.state.itemQuantity}</td>
+        <td>{this.state.itemStoreId}</td>
+        <td>{this.state.itemAvailability}</td>
+      </tr>
+      <tr>
+        <td>{this.state.itemId}</td>
+        <td>{this.state.itemName}</td>
+        <td>{this.state.itemPrice}</td>
+        <td>{this.state.itemQuantity}</td>
+        <td>{this.state.itemStoreId}</td>
+        <td>{this.state.itemAvailability}</td>
+      </tr>
+      </tbody>
+      </Table>
+      </Box>
+      </Flex>
+
+
       </div>
     );
   }
