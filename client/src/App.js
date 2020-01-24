@@ -23,11 +23,12 @@ class App extends Component {
       adminAddressToRemove: undefined,
       ownerAddressToAdd: undefined,
       ownerAddressToRemove: undefined,
-      storeName: undefined,
-      storeId: undefined,
-      storeBalance: [],
       admins:[],
       storeOwners:[],
+      storeIds:[],
+      storeNames:[],
+      storeBalances:[],
+      withdrawAmount: undefined,
       itemId: undefined,
       itemName: undefined,
       itemPrice: undefined,
@@ -41,6 +42,8 @@ class App extends Component {
     this.handleAddStoreOwner = this.handleAddStoreOwner.bind(this)
     this.handleRemoveStoreOwner = this.handleRemoveStoreOwner.bind(this)
     this.handleOpenStore = this.handleOpenStore.bind(this)
+    this.handleCloseStore = this.handleCloseStore.bind(this)
+    this.handleWithdrawStoreBalance = this.handleWithdrawStoreBalance.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -67,6 +70,8 @@ class App extends Component {
       this.listenAdminRemovedEvent()
       this.listenStoreOwnerAddedEvent()
       this.listenStoreOwnerRemovedEvent()
+      this.listenStoreOpenedEvent()
+      this.listenStoreCloseEvent()
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -80,15 +85,20 @@ class App extends Component {
 
     this.state.storesInstance.events.AdminAdded({fromBlock: 0})
     .on('data', async (event) => {
-
-      var newAdminsArray = this.state.admins
+      this.setState(prevState => {
+      var newAdminsArray = prevState.admins;
+      console.log(JSON.stringify(newAdminsArray), event.returnValues.admin)
 
       if (!newAdminsArray.includes(event.returnValues.admin)){
       newAdminsArray.push(event.returnValues.admin)
-      this.setState({ admins: newAdminsArray })
+      }
+      return {
+        ...prevState,
+        admins: newAdminsArray
       }
 
     })
+  })
     .on('error', console.error);
   }
 
@@ -98,6 +108,7 @@ class App extends Component {
     .on('data', async (event) => {
 
       var newAdminsArray = this.state.admins
+      console.log("remove", JSON.stringify(newAdminsArray), event.returnValues.admin)
 
       if (newAdminsArray.includes(event.returnValues.admin)){
       var index=newAdminsArray.indexOf(event.returnValues.admin)
@@ -110,14 +121,32 @@ class App extends Component {
   }
 
   listenStoreOwnerAddedEvent=() => {
-
     this.state.storesInstance.events.StoreOwnerAdded({fromBlock: 0})
     .on('data', async (event) => {
+  	  this.setState(prevState => {
+  		 var newStoreOwnersArray = prevState.storeOwners;
+  		if (!newStoreOwnersArray.includes(event.returnValues.storeOwner)){
+  		  newStoreOwnersArray.push(event.returnValues.storeOwner)
+  		}
+  		return {
+  			...prevState,
+  			storeOwners: newStoreOwnersArray
+  		}
+  	  })
+    })
+      .on('error', console.error);
+    }
 
+
+  listenStoreOwnerRemovedEvent=() => {
+
+    this.state.storesInstance.events.StoreOwnerRemoved({fromBlock: 0})
+    .on('data', async (event) => {
       var newStoreOwnersArray = this.state.storeOwners
 
-      if (!newStoreOwnersArray.includes(event.returnValues.storeOwner)){
-      newStoreOwnersArray.push(event.returnValues.storeOwner)
+      if (newStoreOwnersArray.includes(event.returnValues.storeOwner)){
+      var index=newStoreOwnersArray.indexOf(event.returnValues.storeOwner)
+      newStoreOwnersArray.splice(index, 1)
       this.setState({ storeOwners: newStoreOwnersArray })
       }
 
@@ -125,17 +154,39 @@ class App extends Component {
     .on('error', console.error);
   }
 
-  listenStoreOwnerRemovedEvent=() => {
+  listenStoreOpenedEvent=() => {
 
-    this.state.storesInstance.events.StoreOwnerRemoved({fromBlock: 0})
+    this.state.storesInstance.events.StoreOpened({fromBlock: 0})
     .on('data', async (event) => {
 
-      var newStoreOwnersArray = this.state.storeOwners
+      var newStoreIdArray = this.state.storeIds
+      var newStoreNameArray = this.state.storeNames
 
-      if (newStoreOwnersArray.includes(event.returnValues.storeOwner)){
-      var index=newStoreOwnersArray.indexOf(event.returnValues.storeOwner)
-      newStoreOwnersArray.splice(index, 1)
-      this.setState({ storeOwners: newStoreOwnersArray })
+
+      if (!newStoreIdArray.includes(event.returnValues.storeId) && !newStoreNameArray.includes(event.returnValues.storeName)){
+      newStoreIdArray.push(event.returnValues.storeId)
+      newStoreNameArray.push(event.returnValues.storeName)
+      this.setState({ storeIds: newStoreIdArray, storeNames: newStoreNameArray })
+      }
+
+    })
+    .on('error', console.error);
+  }
+
+  listenStoreClosedEvent=() => {
+
+    this.state.storesInstance.events.StoreClosed({fromBlock: 0})
+    .on('data', async (event) => {
+
+      var newStoreIdArray = this.state.storeIds
+      var newStoreNameArray = this.state.storeNames
+
+      if (newStoreIdArray.includes(event.returnValues.storeId) && newStoreNameArray.includes(event.returnValues.storeName)){
+      var indexStoreId=newStoreIdArray.indexOf(event.returnValues.storeId)
+      newStoreIdArray.splice(indexStoreId, 1)
+      var indexStoreName=newStoreNameArray.indexOf(event.returnValues.storeName)
+      newStoreNameArray.splice(indexStoreName, 1)
+      this.setState({ storeIds: newStoreIdArray, storeNames: newStoreNameArray})
       }
 
     })
@@ -197,13 +248,13 @@ class App extends Component {
     // Get the value from the contract to prove it worked.
     let result = await this.state.storesInstance.methods.openStore(this.state.storeName).send({from: this.state.accounts});
     // Update state with the result.
-
+/*
     const response = await this.state.storesInstance.methods.getBalance().call();
 
     //const balance_eth = this.state.web3.fromWei(balance_wei, 'ether')
     // Update state with the result.
     this.setState({ storeBalance: response });
-
+*/
     this.setLastTransactionDetails(result)
     }
   };
@@ -218,11 +269,22 @@ class App extends Component {
     }
   };
 
+
+  handleWithdrawStoreBalance = async (event) => {
+    if (typeof this.state.storesInstance !== 'undefined') {
+      event.preventDefault()
+      // Get the value from the contract to prove it worked.
+    let result = await this.state.storesInstance.methods.withdrawStoreBalance(this.web3.utils.toWei(this.state.withdrawAmount, 'ether')).send({from: this.state.accounts});
+
+    this.setLastTransactionDetails(result)
+    }
+  };
+
   handleAddItem = async (event) => {
     if (typeof this.state.storesInstance !== 'undefined') {
       event.preventDefault()
       // Get the value from the contract to prove it worked.
-    let result = await this.state.storesInstance.methods.addItem(this.state.itemName, this.web3.utils.toWei(this.state.itemPrice), this.state.itemQuantity, this.state.itemStoreId).send({from: this.state.accounts});
+    let result = await this.state.storesInstance.methods.addItem(this.state.itemName, this.state.web3.utils.toWei(this.state.itemPrice, 'ether'), this.state.itemQuantity, this.state.itemStoreId).send({from: this.state.accounts});
 
     this.setLastTransactionDetails(result)
     }
@@ -259,6 +321,9 @@ class App extends Component {
         case "closeStore":
             this.setState({storeId: event.target.value})
             break;
+        case "withdrawStoreBalance":
+            this.setState({withdrawAmount: event.target.value})
+            break;
         case "itemName":
             this.setState({itemName: event.target.value})
             break;
@@ -271,9 +336,6 @@ class App extends Component {
         case "itemStoreId":
             this.setState({itemStoreId: event.target.value})
               break;
-        case "itemStoreId2remove":
-            this.setState({itemStoreId: event.target.value})
-            break;
         case "itemId":
             this.setState({itemId: event.target.value})
             break;
@@ -444,19 +506,16 @@ class App extends Component {
       <tr>
         <th>Id</th>
         <th>Store Name</th>
-        <th>Store Balance</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <td>{this.state.storeId}</td>
-        <td>{this.state.storeName}</td>
-        <td>{this.state.storeBalance}</td>
-      </tr>
-      <tr>
-        <td>{this.state.storeId}</td>
-        <td>{this.state.storeName}</td>
-        <td>{this.state.storeBalance}</td>
+      {this.state.storeIds.map(storeOpenedId => (
+        <td>{storeOpenedId}</td>
+      ))}
+      {this.state.storeNames.map(storeOpenedName => (
+        <td>{storeOpenedName}</td>
+      ))}
       </tr>
       </tbody>
       </Table>
@@ -548,28 +607,11 @@ class App extends Component {
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>{this.state.itemId}</td>
-        <td>{this.state.itemName}</td>
-        <td>{this.state.itemPrice}</td>
-        <td>{this.state.itemQuantity}</td>
-        <td>{this.state.itemStoreId}</td>
-        <td>{this.state.itemAvailability}</td>
-      </tr>
-      <tr>
-        <td>{this.state.itemId}</td>
-        <td>{this.state.itemName}</td>
-        <td>{this.state.itemPrice}</td>
-        <td>{this.state.itemQuantity}</td>
-        <td>{this.state.itemStoreId}</td>
-        <td>{this.state.itemAvailability}</td>
-      </tr>
+
       </tbody>
       </Table>
       </Box>
       </Flex>
-
-
       </div>
     );
   }
