@@ -20,10 +20,6 @@ Clone this GitHub repository.
     ```sh
     $ npm install -g @openzeppelin/contracts
     ```
-    - Truffle HD Wallet Provider (optional):
-    ```sh
-    $ npm install -g @truffle/hdwallet-provider
-    ```
     - MythX for Truffle (optional):
     ```sh
     $ npm install -g truffle-security
@@ -67,15 +63,16 @@ Clone this GitHub repository.
     // const fs = require('fs');
     // const mnemonic = fs.readFileSync(".secret").toString().trim();
     ```
-  - install the global dependency, Truffle HD Wallet Provider:
+  - Install Truffle HD Wallet Provider:
     ```sh
-    $ npm install -g @truffle/hdwallet-provider
+    $ npm install @truffle/hdwallet-provider
     ```
   - Deploy the smart contract using Truffle & Infura with the following command:
     ```sh
     $ truffle migrate --network rinkeby
     ```
 
+   The Project's smart contracts have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6).
 ## Using the DApp
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
