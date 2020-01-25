@@ -111,7 +111,7 @@ Clone this GitHub repository.
     - Try to withdraw the store balance (0), eg. 1 eth and getting an exception from MetaMask
     - Close Store;
     - Remove Store Owner;
-    - Switcha Account to the Owner (Admin);
+    - Switch Account to the Owner (Admin);
     - Remove the Admin;
     - Done.  
     
