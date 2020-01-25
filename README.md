@@ -114,4 +114,4 @@ Clone this GitHub repository.
     - Remove the Admin;
     - Done.  
     
-   The Buy function is commented in App.js because is still in development.
+   *the Buy function is commented in App.js because is still in development.*
