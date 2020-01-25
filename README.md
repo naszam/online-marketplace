@@ -77,7 +77,8 @@ Clone this GitHub repository.
     $ truffle migrate --network rinkeby
     ```
 
-   The Project's smart contracts have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6).
+   The Project's smart contracts have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6).  
+   The ABIs are available to test the project on Rinkeby's Network.  
 ## Using the DApp
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
