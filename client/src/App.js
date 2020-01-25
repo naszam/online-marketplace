@@ -34,7 +34,10 @@ class App extends Component {
       itemPrice: undefined,
       itemQuantity: undefined,
       itemStoreId: undefined,
-      itemAvailability: undefined
+      itemAvailability: undefined,
+      itemStoreId2Buy: undefined,
+      itemId2Buy: undefined,
+      itemQuantity2Buy: undefined
     }
 
     this.handleAddAdmin = this.handleAddAdmin.bind(this)
@@ -44,6 +47,7 @@ class App extends Component {
     this.handleOpenStore = this.handleOpenStore.bind(this)
     this.handleCloseStore = this.handleCloseStore.bind(this)
     this.handleWithdrawStoreBalance = this.handleWithdrawStoreBalance.bind(this)
+    //this.handleBuyItem = this.handleBuyItem.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -72,6 +76,7 @@ class App extends Component {
       this.listenStoreOwnerRemovedEvent()
       this.listenStoreOpenedEvent()
       this.listenStoreCloseEvent()
+      this.listenItemAddedEvent()
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -161,12 +166,14 @@ class App extends Component {
 
       var newStoreIdArray = this.state.storeIds
       var newStoreNameArray = this.state.storeNames
+      var newStoreBalanceArray = this.state.storeBalances
 
 
-      if (!newStoreIdArray.includes(event.returnValues.storeId) && !newStoreNameArray.includes(event.returnValues.storeName)){
+      if (!newStoreIdArray.includes(event.returnValues.storeId) && !newStoreNameArray.includes(event.returnValues.storeName) && !newStoreBalanceArray.includes(event.returnValues.storeBalance)){
       newStoreIdArray.push(event.returnValues.storeId)
       newStoreNameArray.push(event.returnValues.storeName)
-      this.setState({ storeIds: newStoreIdArray, storeNames: newStoreNameArray })
+      newStoreBalanceArray.push(event.returnValues.storeBalance)
+      this.setState({ storeIds: newStoreIdArray, storeNames: newStoreNameArray, storeBalances: newStoreBalanceArray })
       }
 
     })
@@ -192,6 +199,18 @@ class App extends Component {
     })
     .on('error', console.error);
   }
+
+  listenItemAddedEvent=() => {
+
+    this.state.storesInstance.events.ItemAdded({fromBlock: 0})
+    .on('data', async (event) => {
+
+      this.setState({ itemId: event.returnValues.sku, itemName: event.returnValues.itemName, itemPrice: event.returnValues.itemPrice, itemQuantity: event.returnValues.itemQuantity, itemAvailability: event.returnValues.itemAvailability})
+
+    })
+    .on('error', console.error);
+  }
+
 
 
   handleAddAdmin = async (event) => {
@@ -274,7 +293,7 @@ class App extends Component {
     if (typeof this.state.storesInstance !== 'undefined') {
       event.preventDefault()
       // Get the value from the contract to prove it worked.
-    let result = await this.state.storesInstance.methods.withdrawStoreBalance(this.web3.utils.toWei(this.state.withdrawAmount, 'ether')).send({from: this.state.accounts});
+    let result = await this.state.storesInstance.methods.withdrawStoreBalance(this.state.web3.utils.toWei(this.state.withdrawAmount, 'ether')).send({from: this.state.accounts});
 
     this.setLastTransactionDetails(result)
     }
@@ -299,7 +318,17 @@ class App extends Component {
     this.setLastTransactionDetails(result)
     }
   };
+/*
+  handleBuyItem = async (event) => {
+    if (typeof this.state.storesInstance !== 'undefined') {
+      event.preventDefault()
+      // Get the value from the contract to prove it worked.
+    let result = await this.state.storesInstance.methods.buyItem(this.state.itemStoreId, this.state.itemId, this.state.itemQuantity).send({from: this.state.accounts, value: this.state.web3.utils.toWei(this.state.itemPrice, 'ether')});
 
+    this.setLastTransactionDetails(result)
+    }
+  };
+*/
   handleChange(event)
   {
     switch(event.target.name) {
@@ -338,6 +367,21 @@ class App extends Component {
               break;
         case "itemId":
             this.setState({itemId: event.target.value})
+            break;
+        case "itemAvailability":
+            this.setState({itemAvailability: event.target.value})
+            break;
+        case "itemStoreId2remove":
+            this.setState({itemStoreId: event.target.value})
+            break;
+        case "itemStoreId2Buy":
+            this.setState({itemStoreId: event.target.value})
+            break;
+        case "itemId2Buy":
+            this.setState({itemStoreId: event.target.value})
+            break;
+        case "itemQuantity2Buy":
+            this.setState({itemStoreId: event.target.value})
             break;
         default:
             break;
@@ -457,7 +501,7 @@ class App extends Component {
       <Field label="Store Name:">
         <Input
         type="text"
-        placeholder="e.g. PetShop"
+        placeholder="e.g. Coffeeshop"
         required="true"
         name="openStore"
         value={this.state.storeName}
@@ -506,23 +550,26 @@ class App extends Component {
       <tr>
         <th>Id</th>
         <th>Store Name</th>
+        <th>Store Balance</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-      {this.state.storeIds.map(storeOpenedId => (
-        <td>{storeOpenedId}</td>
-      ))}
-      {this.state.storeNames.map(storeOpenedName => (
-        <td>{storeOpenedName}</td>
-      ))}
+      <td>
+      {this.state.storeIds[0]}
+      </td>
+      <td>
+      {this.state.storeNames[0]}
+      </td>
+      <td>
+      {this.state.storeBalances[0]}
+      </td>
       </tr>
       </tbody>
       </Table>
       </Box>
-      </Flex>
-
       <Flex>
+      </Flex>
       <Box p={3} width={1 / 2}>
       <Heading> Store's Inventory </Heading>
       <Form>
@@ -607,9 +654,59 @@ class App extends Component {
       </tr>
       </thead>
       <tbody>
-
+      <tr>
+      <th> {this.state.itemId}</th>
+      <th> {this.state.itemName}</th>
+      <th> {this.state.itemPrice}</th>
+      <th> {this.state.itemQuantity}</th>
+      <th> {this.state.itemStoreId}</th>
+      <th> {this.state.itemAvailability}</th>
+      </tr>
       </tbody>
       </Table>
+      </Box>
+      </Flex>
+      <Flex>
+      <Box p={3} width={1 / 2}>
+      <Heading> Buy an Item </Heading>
+      <Form>
+      <Box>
+      <Field label="Store Id:">
+        <Input
+        type="text"
+        placeholder="e.g. 0"
+        required="true"
+        name="itemStoreId2Buy"
+        value={this.state.itemStoreId2Buy}
+        onChange={this.handleChange} />
+      </Field>
+      </Box>
+      <Box>
+      <Field label="Item Id:">
+        <Input
+        type="text"
+        placeholder="e.g. 0"
+        required="true"
+        name="itemId2Buy"
+        value={this.state.itemId2Buy}
+        onChange={this.handleChange} />
+      </Field>
+      </Box>
+      <Box>
+      <Field label="Item Quantity:">
+        <Input
+        type="text"
+        placeholder="e.g. 2"
+        required="true"
+        name="itemQuantity2Buy"
+        value={this.state.itemQuantity2Buy}
+        onChange={this.handleChange} />
+      </Field>
+      </Box>
+      <Box>
+      <Button value="Submit" onClick={this.handleBuyItem} >Buy </Button>
+      </Box>
+      </Form>
       </Box>
       </Flex>
       </div>
