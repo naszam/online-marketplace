@@ -36,10 +36,10 @@ contract Stores is Marketplace {
   }
 
   /// Events
-  event StoreOpened(uint storeId, string storeName);
+  event StoreOpened(uint storeId, string storeName, uint storeBalance);
   event StoreBalanceWithdrawn(address storeOwner, uint withdrawAmount, uint newBalance);
   event StoreClosed(uint storeId, string storeName);
-  event ItemAdded(uint sku, uint storeId);
+  event ItemAdded(uint sku, uint storeId, string itemName, uint itemPrice, uint itemQuantity, bool itemAvailability);
   event ItemRemoved(uint sku, uint storeId);
   event ItemPurchased(uint sku, uint storeId);
 
@@ -117,7 +117,7 @@ contract Stores is Marketplace {
   {
     store[storeCount] = Store({id: storeCount, name: _name, owner: msg.sender, isOpen:true});
     balances[msg.sender] = 0;
-    emit StoreOpened(storeCount, store[storeCount].name);
+    emit StoreOpened(storeCount, store[storeCount].name, balances[msg.sender]);
     storeCount = storeCount.add(1);
     return true;
   }
@@ -153,7 +153,7 @@ contract Stores is Marketplace {
     returns(bool)
   {
 	item[_storeId][skuCount] = Item({sku:skuCount, name:_name, price: _price, quantity: _quantity, available:true});
-  emit ItemAdded(skuCount, _storeId);
+  emit ItemAdded(skuCount, _storeId, item[_storeId][skuCount].name, item[_storeId][skuCount].price, item[_storeId][skuCount].quantity, item[_storeId][skuCount].available);
 	skuCount = skuCount.add(1);
 	return true;
   }
