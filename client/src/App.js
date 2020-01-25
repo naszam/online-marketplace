@@ -69,7 +69,7 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3: web3, accounts: accounts[0], storesInstance: instance });
+      this.setState({ networkId: networkId, web3: web3, accounts: accounts[0], storesInstance: instance });
       this.listenAdminAddedEvent()
       this.listenAdminRemovedEvent()
       this.listenStoreOwnerAddedEvent()
