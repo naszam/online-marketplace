@@ -4,8 +4,8 @@
 Consensys Academy's 2019 Developer Bootcamp Final Project.  
 The Project implement an Online Marketplace DApp.
 
-The deployed smart contract allow the owner, set as admin, to manage the admins of the marketplace (add/remove) and to manage store owners (add/remove).
-Then a store owner can manage the store's inventory and funds.
+The deployed smart contract allow the owner, set as admin, to manage the admins of the marketplace (add/remove) and to manage store owners (add/remove).  
+Then a store owner can manage the store's inventory and funds.  
 Finally, the buyer can buy a specific item from the selected store.  
 
 This project was chosen as template for developing a Data Marketplace, extending his functionality to allow renting a data set for a specific application, for a limited amount of time, with extra features like storing on IPFS, multi-sig access management, upgradability, ...
