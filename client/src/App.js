@@ -75,7 +75,7 @@ class App extends Component {
       this.listenStoreOwnerAddedEvent()
       this.listenStoreOwnerRemovedEvent()
       this.listenStoreOpenedEvent()
-      this.listenStoreCloseEvent()
+      this.listenStoreClosedEvent()
       this.listenItemAddedEvent()
     } catch (error) {
       // Catch any errors for any of the above operations.
