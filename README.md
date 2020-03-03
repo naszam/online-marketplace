@@ -9,6 +9,8 @@ Finally, the buyer can buy a specific item from the selected store.
 
 This project was chosen as template for developing a Data Marketplace, extending his functionality to allow renting a data set for a specific application, for a limited amount of time, with extra features like storing on IPFS, multi-sig access management, upgradability, ...
 
+Built in ~3 weeks.
+
 Project Setup
 ============
 
