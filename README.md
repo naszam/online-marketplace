@@ -1,7 +1,7 @@
 # Online Marketplace
 
-Consensys Academy's 2019 Developer Bootcamp Final Project.  
-The Project implement an Online Marketplace DApp.
+> Consensys Academy's 2019 Developer Bootcamp Final Project.  
+> The Project implement an Online Marketplace DApp.
 
 The deployed smart contract allow the owner, set as admin, to manage the admins of the marketplace (add/remove) and to manage store owners (add/remove).  
 Then a store owner can manage the store's inventory and funds.  
