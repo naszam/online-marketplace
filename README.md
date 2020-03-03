@@ -1,3 +1,5 @@
+[![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic&logo=Ethereum)](https://www.trufflesuite.com/)
+
 # Online Marketplace
 
 > Consensys Academy's 2019 Developer Bootcamp Final Project.  
