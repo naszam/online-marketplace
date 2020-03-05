@@ -1,4 +1,5 @@
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic&logo=Ethereum)](https://www.trufflesuite.com/)
+[![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange)](https://ubuntu.com/download/desktop)
 
 # Online Marketplace
 
