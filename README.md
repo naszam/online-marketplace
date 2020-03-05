@@ -1,5 +1,5 @@
 [![#ubuntu 18.04](https://img.shields.io/badge/ubuntu-v18.04-orange?style=plastic)](https://ubuntu.com/download/desktop)
-[![#npm 12.14](https://img.shields.io/badge/npm-v12.14-blue?plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
+[![#npm 12.14](https://img.shields.io/badge/npm-v12.14-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic&logo=Ethereum)](https://www.trufflesuite.com/)
 
 # Online Marketplace
