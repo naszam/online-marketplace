@@ -2,7 +2,7 @@
 [![#npm 12.14](https://img.shields.io/badge/npm-v12.14-blue?style=plastic)](https://github.com/nvm-sh/nvm#installation-and-update)
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc 0.5.16](https://img.shields.io/badge/solc-v0.5.16-brown?style=plastic)](https://github.com/ethereum/solidity/releases?after=v0.6.1)
-[![#testnet rinkeby](https://img.shields.io/badge/testnet-rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6)
+[![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6)
 
 # Online Marketplace
 
