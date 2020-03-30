@@ -4,7 +4,7 @@
 [![#solc 0.5.16](https://img.shields.io/badge/solc-v0.5.16-brown?style=plastic)](https://github.com/ethereum/solidity/releases?after=v0.6.1)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6)
 
-[![#donate chai](https://img.shields.io/badge/Donate-Chai-red?style=plastic)](https://stablepay.io/me/1/CHAI/to/nazzareno.eth)
+[![#donate dai](https://img.shields.io/badge/Donate-Dai-red?style=plastic)](https://stablepay.io/me/1/DAI/to/nazzareno.eth)
 
 # Online Marketplace
 
