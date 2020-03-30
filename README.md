@@ -3,12 +3,7 @@
 [![#built_with_Truffle](https://img.shields.io/badge/built%20with-Truffle-blueviolet?style=plastic)](https://www.trufflesuite.com/)
 [![#solc 0.5.16](https://img.shields.io/badge/solc-v0.5.16-brown?style=plastic)](https://github.com/ethereum/solidity/releases?after=v0.6.1)
 [![#testnet rinkeby](https://img.shields.io/badge/testnet-Rinkeby-yellow?style=plastic&logo=Ethereum)](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6)
-
-
-<a href="https://stablepay.io/checkout?data=U2FsdGVkX1%2Btd0QeZxP%2B5Bxi1sqy40mblQnvr0AQefVJCKBAUscfo1AqMOqVCgDB5XKi7%2B%2BJ4Qh%2F5cTw3%2BxcQSiII4b4f19FoF%2Fo6A7A9RJgDeYZhIeuLE7ksSQxo7X7ue740daRYNjYVyWPVwX0fu6jlEoZ0mHzfvzm6YeAPoa3e6Q4NJ%2Brdt41%2FdWrWRNnNGfnfLqdopu5Cy74UvGPL0KXWMHEvu8HJNV4imvSGqIyY004wgXWyHnZCUjvpsBcu%2BaWnXKGi2cUdpUR4dfqcQDQx4Zacs8xF9KezlysZ%2Bv%2Bx6%2FoAGBUi7z1Ex3wi2P17qohczDhn7B7iSEAi6eKDQ%3D%3D">
-    <img src="https://stablepay.io/static/DonationsButtonBlueWhite.svg" >
-</a>
-
+[![#donate chai](https://img.shields.io/badge/Donate-Chai-red)](https://stablepay.io/me/1/CHAI/to/nazzareno.eth)
 # Online Marketplace
 
 > Consensys Academy's 2019 Developer Bootcamp Final Project.  
