@@ -73,7 +73,7 @@ contract('Adminable', function(accounts) {
       it("should emit the appropriate event when an admin is removed", async () => {
         await instance.addAdmin(admin2, {from:admin})
         const result = await instance.removeAdmin(admin2, {from:admin})
-        assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event not emitted, check removeAmdin method")
+        assert.equal(result.logs[0].event, "AdminRemoved", "AdminRemoved event not emitted, check removeAdmin method")
       })
 
       it("random address should not be able to remove an admin", async () => {
