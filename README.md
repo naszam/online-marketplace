@@ -21,6 +21,11 @@ Built in ~3 weeks.
 
 [Demo](https://youtu.be/shsTfzgBVUo	)
 
+## Links
+
+- [Depoyed Addresses on Rinkeby](deployed_addresses.txt)
+- [Design Pattern Decisions](design_pattern_decisions.md)
+- [Avoiding Common Attacks](avoiding_common_attacks.md)
 
 Project Setup
 ============
