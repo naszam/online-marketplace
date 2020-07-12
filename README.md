@@ -27,8 +27,14 @@ Built in ~3 weeks.
 - [Design Pattern Decisions](design_pattern_decisions.md)
 - [Avoiding Common Attacks](avoiding_common_attacks.md)
 
-Project Setup
-============
+## Sections
+* [Setup](#setup)
+* [Deploy](#deploy)
+* [Using the DApp](#using-the-dapp)
+* [About](#about)
+
+Setup
+=====
 
 Clone this GitHub repository.
 
