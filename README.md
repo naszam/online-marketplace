@@ -32,7 +32,7 @@ Project Setup
 
 Clone this GitHub repository.
 
-# Steps to compile and deploy
+## Steps to compile and deploy
 
   - Global dependencies
     - Truffle & Ganache:
@@ -69,6 +69,8 @@ Clone this GitHub repository.
      ```sh
      $ truffle run verify
      ```
+Deploy     
+======
 ## Deploying on Rinkeby's Testnet
   - Get an Ethereum Account on Metamask.
   - On the landing page, click “Get Chrome Extension.”
@@ -97,7 +99,9 @@ Clone this GitHub repository.
 
    The Project's smart contracts have been deployed on [Rinkeby](https://rinkeby.etherscan.io/address/0x527903D7938Fba0b2A88b55244b0eafb28047ff6).  
    The ABIs are available to test the project on Rinkeby's Network.  
-## Using the DApp
+
+Using the DApp
+==============
   - Install [Ganache GUI](https://www.trufflesuite.com/ganache).
   - Change Ganache GUI port to 8545.
   - Import Ganache GUI mnemonic into MetaMask.
@@ -134,3 +138,9 @@ Clone this GitHub repository.
     - Done.  
     
    *the Buy function is commented in App.js because is still in development.*
+   
+   About
+   =====
+   
+   ## Author
+   Project created by [Nazzareno Massari](https://nazzarenomassari.com)  
